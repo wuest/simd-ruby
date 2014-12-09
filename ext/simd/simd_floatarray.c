@@ -15,6 +15,10 @@ void Init_SIMD_FloatArray(VALUE parent)
 static VALUE allocate(VALUE klass)
 {
 	double_vector_wrapper *vector = malloc(sizeof(double_vector_wrapper));
+	if(vector == NULL)
+	{
+		rb_raise(rb_eNoMemError, "Unable to allocate memory");
+	}
 	vector->data = NULL;
 
 	return(Data_Wrap_Struct(klass, NULL, deallocate, vector));
@@ -43,6 +47,10 @@ static VALUE method_initialize(VALUE self, VALUE rb_array)
 	vector->len = n = RARRAY_LEN(rb_array);
 	m = n + (n % 2);
 	vector->data = malloc(((m / 2) * sizeof(d2v_t)));
+	if(vector->data == NULL)
+	{
+		rb_raise(rb_eNoMemError, "Unable to allocate memory");
+	}
 
 	for(i = 0; i < n; i++)
 		vector->data[i/2].f[i%2] = NUM2DBL(rb_ary_entry(rb_array, i));
