@@ -22,7 +22,14 @@ static VALUE allocate(VALUE klass)
 
 static void deallocate(double_vector_wrapper *vector)
 {
-	free(vector);
+	if(vector)
+	{
+		if(vector->data)
+		{
+			free(vector->data);
+		}
+		free(vector);
+	}
 }
 
 static VALUE method_initialize(VALUE self, VALUE rb_array)
