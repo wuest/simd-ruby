@@ -60,6 +60,7 @@ static VALUE method_initialize(VALUE self, VALUE rb_array)
 static VALUE method_multiply(VALUE self, VALUE obj)
 {
 	unsigned long size, i;
+	int align;
 	double_vector_wrapper *vector, *vector2, *result;
 	VALUE result_obj = allocate(SIMD_FloatArray);
 
@@ -67,15 +68,32 @@ static VALUE method_multiply(VALUE self, VALUE obj)
 	Data_Get_Struct(obj, double_vector_wrapper, vector2);
 	Data_Get_Struct(result_obj, double_vector_wrapper, result);
 
-	if(vector->len != vector2->len && vector2->len != 2)
-		rb_raise(rb_eArgError, "Vectors must be the same size, or 2.");
+	align = internal_align_vectors(vector->len, vector2->len);
 
 	size = vector->len + (vector->len % 2);
 	result->data = internal_allocate_vector_array(size);
 	result->len = vector->len;
 
-	for(i = 0; i < size / 2; i++)
-		result->data[i].v = vector->data[i].v * vector2->data[i].v;
+	switch(align)
+	{
+		case 0:
+			for(i = 0; i < size / 2; i++)
+			{
+				result->data[i].v = vector->data[i].v * vector2->data[i].v;
+			}
+			break;
+		case 1:
+			for(i = 0; i < size / 2; i++)
+			{
+				result->data[i].v = vector->data[i].v * vector2->data[0].v;
+			}
+			break;
+		default:
+			for(i = 0; i < size / 2; i++)
+			{
+				result->data[i].v = vector->data[i].v * vector2->data[i % vector2->len].v;
+			}
+	}
 
 	return(result_obj);
 }
@@ -112,4 +130,18 @@ static d2v_t *internal_allocate_vector_array(unsigned long size)
 	}
 
 	return(vector);
+}
+
+static int internal_align_vectors(unsigned long v1, unsigned long v2)
+{
+	if(v1 == v2)
+		return(0);
+	if(v2 == 2)
+		return(1);
+	if(v1 % v2 == 0)
+		return(2);
+
+	rb_raise(rb_eArgError, "Vector length must be evenly divisible by operand.");
+	/* Never reached */
+	return(-1);
 }

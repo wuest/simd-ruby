@@ -22,3 +22,4 @@ static VALUE method_length(VALUE self);
 static VALUE method_to_a(VALUE self);
 
 static d2v_t *internal_allocate_vector_array(unsigned long size);
+static int internal_align_vectors(unsigned long v1, unsigned long v2);
