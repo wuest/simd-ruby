@@ -65,22 +65,23 @@ static VALUE method_multiply(VALUE self, VALUE obj)
 {
 	unsigned long size, i;
 	double_vector_wrapper *vector, *vector2, *result;
+	VALUE result_obj = allocate(SIMD_FloatArray);
 
 	Data_Get_Struct(self, double_vector_wrapper, vector);
 	Data_Get_Struct(obj, double_vector_wrapper, vector2);
+	Data_Get_Struct(result_obj, double_vector_wrapper, result);
 
 	if(vector->len != vector2->len && vector2->len != 2)
 		rb_raise(rb_eArgError, "Vectors must be the same size, or 2.");
 
 	size = vector->len + (vector->len % 2);
-	result = malloc(sizeof(double_vector_wrapper));
 	result->data = malloc(size * sizeof(d2v_t));
 	result->len = vector->len;
 
 	for(i = 0; i < size / 2; i++)
 		result->data[i].v = vector->data[i].v * vector2->data[i].v;
 
-	return(Data_Wrap_Struct(SIMD_FloatArray, NULL, deallocate, result));
+	return(result_obj);
 }
 
 static VALUE method_length(VALUE self)
