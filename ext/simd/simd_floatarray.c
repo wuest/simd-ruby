@@ -45,13 +45,9 @@ static VALUE method_initialize(VALUE self, VALUE rb_array)
 
 	Data_Get_Struct(self, double_vector_wrapper, vector);
 	vector->len = n = RARRAY_LEN(rb_array);
-	m = n + (n % 2);
-	vector->data = malloc(((m / 2) * sizeof(d2v_t)));
-	if(vector->data == NULL)
-	{
-		rb_raise(rb_eNoMemError, "Unable to allocate memory");
-	}
+	vector->data = internal_allocate_vector_array(vector->len);
 
+	m = n + (n % 2);
 	for(i = 0; i < n; i++)
 		vector->data[i/2].f[i%2] = NUM2DBL(rb_ary_entry(rb_array, i));
 
@@ -75,7 +71,7 @@ static VALUE method_multiply(VALUE self, VALUE obj)
 		rb_raise(rb_eArgError, "Vectors must be the same size, or 2.");
 
 	size = vector->len + (vector->len % 2);
-	result->data = malloc(size * sizeof(d2v_t));
+	result->data = internal_allocate_vector_array(size);
 	result->len = vector->len;
 
 	for(i = 0; i < size / 2; i++)
@@ -105,4 +101,15 @@ static VALUE method_to_a(VALUE self)
 	}
 
 	return(rb_array);
+}
+
+static d2v_t *internal_allocate_vector_array(unsigned long size)
+{
+	d2v_t *vector = malloc(((size + (size % 2)) / 2) * sizeof(d2v_t));
+	if(vector == NULL)
+	{
+		rb_raise(rb_eNoMemError, "Unable to allocate memory");
+	}
+
+	return(vector);
 }

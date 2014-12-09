@@ -20,3 +20,5 @@ static VALUE method_initialize(VALUE self, VALUE rb_array);
 static VALUE method_multiply(VALUE self, VALUE obj);
 static VALUE method_length(VALUE self);
 static VALUE method_to_a(VALUE self);
+
+static d2v_t *internal_allocate_vector_array(unsigned long size);
