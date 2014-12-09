@@ -28,7 +28,7 @@ static void deallocate(double_vector_wrapper *vector)
 static VALUE method_initialize(VALUE self, VALUE rb_array)
 {
 	double_vector_wrapper *vector;
-	long n,m,i;
+	unsigned long n,m,i;
 
 	Check_Type(rb_array, T_ARRAY);
 
@@ -48,7 +48,7 @@ static VALUE method_initialize(VALUE self, VALUE rb_array)
 
 static VALUE method_multiply(VALUE self, VALUE obj)
 {
-	long size, i;
+	unsigned long size, i;
 	double_vector_wrapper *vector, *vector2, *result;
 
 	Data_Get_Struct(self, double_vector_wrapper, vector);
@@ -78,7 +78,7 @@ static VALUE method_length(VALUE self)
 
 static VALUE method_to_a(VALUE self)
 {
-	long i;
+	unsigned long i;
 	double_vector_wrapper *vector;
 	VALUE rb_array = rb_ary_new();
 

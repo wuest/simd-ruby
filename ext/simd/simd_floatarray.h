@@ -10,7 +10,7 @@ typedef union d2v_t
 typedef struct double_vector_wrapper
 {
 	d2v_t *data;
-	long len;
+	unsigned long len;
 } double_vector_wrapper;
 
 static VALUE allocate(VALUE klass);
