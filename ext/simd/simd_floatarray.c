@@ -146,7 +146,7 @@ static VALUE method_to_a(VALUE self)
 
 static d2v_t *internal_allocate_vector_array(unsigned long size)
 {
-	d2v_t *vector = malloc(((size + (size % 2)) / 2) * sizeof(d2v_t));
+	d2v_t *vector = malloc(((size + (size % 2)) / 2 + 1) * sizeof(d2v_t));
 	if(vector == NULL)
 	{
 		rb_raise(rb_eNoMemError, "Unable to allocate memory");
