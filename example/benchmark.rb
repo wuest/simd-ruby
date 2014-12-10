@@ -5,6 +5,33 @@ require 'benchmark'
 
 include SIMD
 
+def sisd_loop(op, modulo, sisd, x)
+  sisd_loop = if modulo
+    len = sisd.length
+    case op
+    when :*
+      ->(e, i) { x << e * sisd[i % len] }
+    when :+
+      ->(e, i) { x << e + sisd[i % len] }
+    when :/
+      ->(e, i) { x << e / sisd[i % len] }
+    when :-
+      ->(e, i) { x << e - sisd[i % len] }
+    end
+  else
+    case op
+    when :*
+      ->(e, i) { x << e * sisd[i] }
+    when :+
+      ->(e, i) { x << e + sisd[i] }
+    when :/
+      ->(e, i) { x << e / sisd[i] }
+    when :-
+      ->(e, i) { x << e - sisd[i] }
+    end
+  end
+end
+
 iter = 500
 
 a1 = (1..50_000).to_a * 25
@@ -16,37 +43,34 @@ s2 = FloatArray.new(a2)
 s3 = FloatArray.new(a3)
 s4 = FloatArray.new(a4)
 
-puts "Same size array"
-Benchmark.bm do |b|
-  b.report('SIMD') { iter.times { s1 * s2 } }
-  b.report('SISD') do
-    iter.times do
-      x = Array.new
-      a1.each_with_index { |e,i| x << e * a2[i] }
-    end
-  end
-end
+modes = {
+  'Same size array' => [a2, [s1, s2]],
+  '4-wide operand'  => [a3, [s1, s3]],
+  '2-wide operand'  => [a4, [s1, s4]]
+}
+ops = {
+  'Multiplication' => :*,
+  'Addition'       => :+,
+  'Division'       => :/,
+  'Subtraction'    => :-
+}
 
-puts
-puts "4-wide operand"
-Benchmark.bm do |b|
-  b.report('SIMD') { iter.times { s1 * s3 } }
-  b.report('SISD') do
-    iter.times do
-      x = Array.new
-      a1.each_with_index { |e,i| x << e * a3[i % 4] }
-    end
-  end
-end
+modes.each do |mode, args|
+  puts " *** #{mode} ***"
+  sisd   = args.first
+  s1, s2 = *args.last
+  modulo = sisd.length != a1.length
+  ops.each do |name, op|
+    puts " *** #{name} ***"
 
-puts
-puts "2-wide operand"
-Benchmark.bm do |b|
-  b.report('SIMD') { iter.times { s1 * s4 } }
-  b.report('SISD') do
-    iter.times do
-      x = Array.new
-      a1.each_with_index { |e,i| x << e * a4[i % 2] }
+    Benchmark.bm do |b|
+      b.report('SIMD') { iter.times { s1 * s2 } }
+      b.report('SISD') do
+        iter.times do
+          a1.each_with_index(&(sisd_loop(op, modulo, sisd, Array.new)))
+        end
+      end
     end
   end
+  puts
 end

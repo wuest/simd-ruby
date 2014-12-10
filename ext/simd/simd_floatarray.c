@@ -8,6 +8,9 @@ void Init_SIMD_FloatArray(VALUE parent)
 	rb_define_alloc_func(SIMD_FloatArray, allocate);
 	rb_define_method(SIMD_FloatArray, "initialize", method_initialize, 1);
 	rb_define_method(SIMD_FloatArray, "*", method_multiply, 1);
+	rb_define_method(SIMD_FloatArray, "/", method_divide, 1);
+	rb_define_method(SIMD_FloatArray, "+", method_add, 1);
+	rb_define_method(SIMD_FloatArray, "-", method_subtract, 1);
 	rb_define_method(SIMD_FloatArray, "length", method_length, 0);
 	rb_define_method(SIMD_FloatArray, "to_a", method_to_a, 0);
 }
@@ -60,6 +63,21 @@ static VALUE method_initialize(VALUE self, VALUE rb_array)
 static VALUE method_multiply(VALUE self, VALUE obj)
 {
 	return(internal_apply_operation(self, obj, func_multiply));
+}
+
+static VALUE method_divide(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, func_divide));
+}
+
+static VALUE method_add(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, func_add));
+}
+
+static VALUE method_subtract(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, func_subtract));
 }
 
 static VALUE internal_apply_operation(VALUE self, VALUE obj, b_operation func)
@@ -154,4 +172,19 @@ static int internal_align_vectors(unsigned long v1, unsigned long v2)
 static d2v func_multiply(d2v v1, d2v v2)
 {
 	return(v1 * v2);
+}
+
+static d2v func_divide(d2v v1, d2v v2)
+{
+	return(v1 / v2);
+}
+
+static d2v func_add(d2v v1, d2v v2)
+{
+	return(v1 + v2);
+}
+
+static d2v func_subtract(d2v v1, d2v v2)
+{
+	return(v1 - v2);
 }
