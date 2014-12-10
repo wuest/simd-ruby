@@ -14,7 +14,7 @@ void Init_SIMD_FloatArray(VALUE parent)
 
 static VALUE allocate(VALUE klass)
 {
-	double_vector_wrapper *vector = malloc(sizeof(double_vector_wrapper));
+	d2v_container *vector = malloc(sizeof(d2v_container));
 	if(vector == NULL)
 	{
 		rb_raise(rb_eNoMemError, "Unable to allocate memory");
@@ -24,7 +24,7 @@ static VALUE allocate(VALUE klass)
 	return(Data_Wrap_Struct(klass, NULL, deallocate, vector));
 }
 
-static void deallocate(double_vector_wrapper *vector)
+static void deallocate(d2v_container *vector)
 {
 	if(vector)
 	{
@@ -38,12 +38,12 @@ static void deallocate(double_vector_wrapper *vector)
 
 static VALUE method_initialize(VALUE self, VALUE rb_array)
 {
-	double_vector_wrapper *vector;
+	d2v_container *vector;
 	unsigned long n,m,i;
 
 	Check_Type(rb_array, T_ARRAY);
 
-	Data_Get_Struct(self, double_vector_wrapper, vector);
+	Data_Get_Struct(self, d2v_container, vector);
 	vector->len = n = RARRAY_LEN(rb_array);
 	vector->data = internal_allocate_vector_array(vector->len);
 
@@ -59,39 +59,44 @@ static VALUE method_initialize(VALUE self, VALUE rb_array)
 
 static VALUE method_multiply(VALUE self, VALUE obj)
 {
+	return(internal_apply_operation(self, obj, func_multiply));
+}
+
+static VALUE internal_apply_operation(VALUE self, VALUE obj, b_operation func)
+{
 	unsigned long size, i;
 	int align;
-	double_vector_wrapper *vector, *vector2, *result;
+	d2v_container *v1, *v2, *r;
 	VALUE result_obj = allocate(SIMD_FloatArray);
 
-	Data_Get_Struct(self, double_vector_wrapper, vector);
-	Data_Get_Struct(obj, double_vector_wrapper, vector2);
-	Data_Get_Struct(result_obj, double_vector_wrapper, result);
+	Data_Get_Struct(self, d2v_container, v1);
+	Data_Get_Struct(obj, d2v_container, v2);
+	Data_Get_Struct(result_obj, d2v_container, r);
 
-	align = internal_align_vectors(vector->len, vector2->len);
+	align = internal_align_vectors(v1->len, v2->len);
 
-	size = vector->len + (vector->len % 2);
-	result->data = internal_allocate_vector_array(size);
-	result->len = vector->len;
+	size = v1->len + (v1->len % 2);
+	r->data = internal_allocate_vector_array(size);
+	r->len = v1->len;
 
 	switch(align)
 	{
 		case 0:
 			for(i = 0; i < size / 2; i++)
 			{
-				result->data[i].v = vector->data[i].v * vector2->data[i].v;
+				r->data[i].v = func(v1->data[i].v, v2->data[i].v);
 			}
 			break;
 		case 1:
 			for(i = 0; i < size / 2; i++)
 			{
-				result->data[i].v = vector->data[i].v * vector2->data[0].v;
+				r->data[i].v = func(v1->data[i].v, v2->data[0].v);
 			}
 			break;
 		default:
 			for(i = 0; i < size / 2; i++)
 			{
-				result->data[i].v = vector->data[i].v * vector2->data[i % vector2->len].v;
+				r->data[i].v = func(v1->data[i].v, v2->data[i % v2->len].v);
 			}
 	}
 
@@ -100,8 +105,8 @@ static VALUE method_multiply(VALUE self, VALUE obj)
 
 static VALUE method_length(VALUE self)
 {
-	double_vector_wrapper *vector;
-	Data_Get_Struct(self, double_vector_wrapper, vector);
+	d2v_container *vector;
+	Data_Get_Struct(self, d2v_container, vector);
 
 	return(INT2NUM(vector->len));
 }
@@ -109,10 +114,10 @@ static VALUE method_length(VALUE self)
 static VALUE method_to_a(VALUE self)
 {
 	unsigned long i;
-	double_vector_wrapper *vector;
+	d2v_container *vector;
 	VALUE rb_array = rb_ary_new();
 
-	Data_Get_Struct(self, double_vector_wrapper, vector);
+	Data_Get_Struct(self, d2v_container, vector);
 	for(i = 0; i < vector->len; i++)
 	{
 		rb_ary_store(rb_array, i, DBL2NUM(vector->data[i/2].f[i%2]));
@@ -144,4 +149,9 @@ static int internal_align_vectors(unsigned long v1, unsigned long v2)
 	rb_raise(rb_eArgError, "Vector length must be evenly divisible by operand.");
 	/* Never reached */
 	return(-1);
+}
+
+static d2v func_multiply(d2v v1, d2v v2)
+{
+	return(v1 * v2);
 }
