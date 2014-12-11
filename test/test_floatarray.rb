@@ -60,4 +60,15 @@ class TestFloatArray < Test::Unit::TestCase
     assert_equal(8, vector.length)
     assert_equal(expected, vector.to_a)
   end
+
+  def test_cannot_create_arrays_shorter_than_two
+    assert_raises(ArgumentError) { SIMD::FloatArray.new([]) }
+    assert_raises(ArgumentError) { SIMD::FloatArray.new([1]) }
+  end
+
+  def test_cannot_perform_operations_between_even_and_odd_vectors
+    veven = SIMD::FloatArray.new([1,2,3,4])
+    vodd  = SIMD::FloatArray.new([1,2,3])
+    assert_raises(ArgumentError) { veven * vodd }
+  end
 end

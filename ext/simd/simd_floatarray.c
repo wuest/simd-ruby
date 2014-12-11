@@ -50,17 +50,26 @@ static VALUE method_initialize(VALUE self, VALUE rb_array)
 	unsigned long n,m,i;
 
 	Check_Type(rb_array, T_ARRAY);
-
 	Data_Get_Struct(self, d2v_container, vector);
+
 	vector->len = n = RARRAY_LEN(rb_array);
+
+	if(vector->len < 2)
+	{
+		rb_raise(rb_eArgError, "Vectors must be at least 2 long");
+	}
+
 	vector->data = internal_allocate_vector_array(vector->len);
 
-	m = n + (n % 2);
 	for(i = 0; i < n; i++)
 		vector->data[i/2].f[i%2] = NUM2DBL(rb_ary_entry(rb_array, i));
 
+	/* If the array is an odd number of elements, set the final element to 1 */
+	m = n + (n % 2);
 	if(n < m)
+	{
 		vector->data[m/2].f[1] = 1.0;
+	}
 
 	return(self);
 }
@@ -178,12 +187,23 @@ static d2v_t *internal_allocate_vector_array(unsigned long size)
  * lengths or with the operand's length being a multiple of the data array's. */
 static int internal_align_vectors(unsigned long v1, unsigned long v2)
 {
+	if((v1 % 2) != (v2 % 2))
+	{
+		rb_raise(rb_eArgError, "Both Vectors must be of even or odd length.");
+	}
+
 	if(v1 == v2)
+	{
 		return(0);
+	}
 	if(v2 == 2)
+	{
 		return(1);
+	}
 	if(v1 % v2 == 0)
+	{
 		return(2);
+	}
 
 	rb_raise(rb_eArgError, "Vector length must be evenly divisible by operand.");
 	/* Never reached */
