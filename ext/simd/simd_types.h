@@ -13,12 +13,6 @@ typedef union d2v_t
 	double f[2];
 } d2v_t;
 
-typedef struct d2v_container
-{
-	d2v_t *data;
-	unsigned long len;
-} d2v_container;
-
 /* 
  * Types for SmallFloatArray
  *

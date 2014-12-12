@@ -16,32 +16,6 @@ void Init_SIMD_SmallFloatArray(VALUE parent)
 	rb_define_method(SIMD_SmallFloatArray, "to_a", method_to_a, 0);
 }
 
-/* Internal: Allocate memory for the vector container. */
-static VALUE allocate(VALUE klass)
-{
-	vector_t *vector = malloc(sizeof(vector_t));
-	if(vector == NULL)
-	{
-		rb_raise(rb_eNoMemError, "Unable to allocate memory");
-	}
-
-	vector->data = NULL; /* Avoid potentially freeing unitialized memory. */
-	return(Data_Wrap_Struct(klass, NULL, deallocate, vector));
-}
-
-/* Internal: Free memory from the vector container and the data array. */
-static void deallocate(vector_t *vector)
-{
-	if(vector)
-	{
-		if(vector->data)
-		{
-			free(vector->data);
-		}
-		free(vector);
-	}
-}
-
 /* Public: Initialize the FloatArray object given a Ruby Array of values
  * which can be cast to a double. */
 static VALUE method_initialize(VALUE self, VALUE rb_array)
@@ -60,7 +34,7 @@ static VALUE method_initialize(VALUE self, VALUE rb_array)
 		rb_raise(rb_eArgError, "Vectors must be at least 4 long");
 	}
 
-	vector->data = internal_allocate_vector_array(vector->len);
+	vector->data = internal_allocate_vector_array(vector->len, sizeof(f4v_t));
 
 	data = (f4v_t *)vector->data;
 	for(i = 0; i < vector->len; i++)
@@ -106,15 +80,6 @@ static VALUE method_subtract(VALUE self, VALUE obj)
 	return(internal_apply_operation(self, obj, func_subtract));
 }
 
-/* Public: Return the number of elements in the Array. */
-static VALUE method_length(VALUE self)
-{
-	vector_t *vector;
-	Data_Get_Struct(self, vector_t, vector);
-
-	return(INT2NUM(vector->len));
-}
-
 /* Public: Return a Ruby Array containing the doubles within the data array. */
 static VALUE method_to_a(VALUE self)
 {
@@ -146,9 +111,9 @@ static VALUE internal_apply_operation(VALUE self, VALUE obj, bf_operation func)
 	Data_Get_Struct(self, vector_t, v1);
 	Data_Get_Struct(obj, vector_t, v2);
 	Data_Get_Struct(result_obj, vector_t, rv);
-	rv->data = internal_allocate_vector_array(v1->len);
+	rv->data = internal_allocate_vector_array(v1->len, sizeof(f4v_t));
 
-	align = internal_align_vectors(v1->len, v2->len);
+	align = internal_align_vectors(v1->len, v2->len, 4);
 
 	/* Ensure that size will be the result of ceil(len / 4.0) */
 	size = (v1->len + 3) / 4;
@@ -181,45 +146,6 @@ static VALUE internal_apply_operation(VALUE self, VALUE obj, bf_operation func)
 	}
 
 	return(result_obj);
-}
-
-/* Internal: Allocate memory for the data array. */
-static f4v_t *internal_allocate_vector_array(unsigned long size)
-{
-	f4v_t *vector = malloc(((size + (size % 4)) / 4 + 1) * sizeof(f4v_t));
-	if(vector == NULL)
-	{
-		rb_raise(rb_eNoMemError, "Unable to allocate memory");
-	}
-
-	return(vector);
-}
-
-/* Internal: Determine if two arrays can be acted upon, by being of equal
- * lengths or with the operand's length being a multiple of the data array's. */
-static int internal_align_vectors(unsigned long v1, unsigned long v2)
-{
-	if((v1 % 4) != (v2 % 4))
-	{
-		rb_raise(rb_eArgError, "Both Vectors must be of even or odd length.");
-	}
-
-	if(v1 == v2)
-	{
-		return(0);
-	}
-	if(v2 == 4)
-	{
-		return(1);
-	}
-	if(v1 % v2 == 0)
-	{
-		return(2);
-	}
-
-	rb_raise(rb_eArgError, "Vector length must be evenly divisible by operand.");
-	/* Never reached */
-	return(-1);
 }
 
 /* Function: Multiply two vectors. */
