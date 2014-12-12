@@ -145,6 +145,14 @@ static VALUE internal_apply_operation(VALUE self, VALUE obj, b_operation func)
 			}
 	}
 
+	if(rv->len != rv->len + (rv->len % 4))
+	{
+		for(i = 3; i > rv->len + (rv->len % 4); i--)
+		{
+			r[size].f[i] = 1;
+		}
+	}
+
 	return(result_obj);
 }
 
