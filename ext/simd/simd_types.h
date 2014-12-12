@@ -33,5 +33,4 @@ typedef struct vector_t
 	unsigned long len;
 } vector_t;
 
-typedef d2v (*b_operation)(d2v v1, d2v v2);
-typedef f4v (*bf_operation)(f4v v1, f4v v2);
+typedef void (b_operation)(void *v1, void *v2, void *r);

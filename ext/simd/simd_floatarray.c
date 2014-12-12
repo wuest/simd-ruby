@@ -129,19 +129,19 @@ static VALUE internal_apply_operation(VALUE self, VALUE obj, b_operation func)
 		case 0: /* Same size arrays */
 			for(i = 0; i < size; i++)
 			{
-				r[i].v = func(d1[i].v, d2[i].v);
+				func(&d1[i].v, &d2[i].v, &r[i].v);
 			}
 			break;
 		case 1: /* Operand is exactly 2 long (size of 1 sse register) */
 			for(i = 0; i < size; i++)
 			{
-				r[i].v = func(d1[i].v, d2[0].v);
+				func(&d1[i].v, &d2[0].v, &r[i].v);
 			}
 			break;
 		default: /* Self is a multiple of operand's length long */
 			for(i = 0; i < size; i++)
 			{
-				r[i].v = func(d1[i].v, d2[i % v2->len].v);
+				func(&d1[i].v, &d2[i % v2->len].v, &r[i].v);
 			}
 	}
 
@@ -149,25 +149,25 @@ static VALUE internal_apply_operation(VALUE self, VALUE obj, b_operation func)
 }
 
 /* Function: Multiply two vectors. */
-static d2v func_multiply(d2v v1, d2v v2)
+static void func_multiply(void *v1, void *v2, void *r)
 {
-	return(v1 * v2);
+	*(d2v *)r = *(d2v *)v1 * *(d2v *)v2;
 }
 
 /* Function: Divide two vectors. */
-static d2v func_divide(d2v v1, d2v v2)
+static void func_divide(void *v1, void *v2, void *r)
 {
-	return(v1 / v2);
+	*(d2v *)r = *(d2v *)v1 / *(d2v *)v2;
 }
 
 /* Function: Add two vectors. */
-static d2v func_add(d2v v1, d2v v2)
+static void func_add(void *v1, void *v2, void *r)
 {
-	return(v1 + v2);
+	*(d2v *)r = *(d2v *)v1 + *(d2v *)v2;
 }
 
 /* Function: Subtract two vectors. */
-static d2v func_subtract(d2v v1, d2v v2)
+static void func_subtract(void *v1, void *v2, void *r)
 {
-	return(v1 - v2);
+	*(d2v *)r = *(d2v *)v1 - *(d2v *)v2;
 }
