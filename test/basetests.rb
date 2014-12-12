@@ -1,11 +1,6 @@
 require 'helper'
 
 class BaseTests < Test::Unit::TestCase
-  def setup
-    @start    = [250.0] * 8
-    @mult     = [5, 10, 20, 25, 50, 100, 125, 250]
-  end
-
   def self.build_tests(klass)
     define_method :test_multiplication do
       expected = @start.zip(@mult).each_with_object(:*).map(&:reduce)
@@ -38,8 +33,8 @@ class BaseTests < Test::Unit::TestCase
     define_method :test_unaligned_vectors_wont_div_by_zero do
       unaligned1 = [3,4,5,6,7]
       unaligned2 = [1,2,3,4,5]
-      unaligned3 = [2.0] * 5
-      expected   = [1.0] * 5
+      unaligned3 = [2] * 5
+      expected   = [1] * 5
 
       vector1 = klass.new(unaligned1)
       vector2 = klass.new(unaligned2)
@@ -65,14 +60,10 @@ class BaseTests < Test::Unit::TestCase
       assert_equal(8, vector.length)
       assert_equal(expected, vector.to_a)
     end
+
+    define_method :test_cannot_create_arrays_shorter_than_two do
+      assert_raises(ArgumentError) { klass.new([]) }
+      assert_raises(ArgumentError) { klass.new([1]) }
+    end
   end
-
-=begin
-
-  def test_cannot_create_arrays_shorter_than_two
-    assert_raises(ArgumentError) { SIMD::FloatArray.new([]) }
-    assert_raises(ArgumentError) { SIMD::FloatArray.new([1]) }
-  end
-
-=end
 end

@@ -7,4 +7,5 @@ void Init_simd()
 	Init_SIMD_FloatArray(SIMD);
 	Init_SIMD_SmallFloatArray(SIMD);
 	Init_SIMD_IntArray(SIMD);
+	Init_SIMD_LongArray(SIMD);
 }

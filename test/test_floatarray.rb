@@ -1,13 +1,13 @@
 require 'helper'
 
-class TestFloatArray < BaseTests
+class TestFloatArray < FloatBaseTests
   def setup
     super
     @start_v  = SIMD::FloatArray.new(@start)
     @mult_v   = SIMD::FloatArray.new(@mult)
   end
 
-  build_tests(SIMD::FloatArray)
+  build_float_tests(SIMD::FloatArray)
 
   def test_cannot_create_arrays_shorter_than_two
     assert_raises(ArgumentError) { SIMD::FloatArray.new([]) }
