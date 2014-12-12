@@ -1,6 +1,6 @@
 #pragma once
 
-/* 
+/*
  * Types for FloatArray
  *
  * Since ruby internally uses doubles for the Float type, SIMD::FloatArray will
@@ -13,7 +13,7 @@ typedef union d2v_t
 	double f[2];
 } d2v_t;
 
-/* 
+/*
  * Types for SmallFloatArray
  *
  * Since ruby internally uses doubles for the Float type, SIMD::SmallFloatArray
@@ -26,6 +26,16 @@ typedef union f4v_t
 	f4v v;
 	float f[4];
 } f4v_t;
+
+/*
+ * Types for IntArray
+ */
+typedef int __attribute__ ((vector_size (16))) i4v;
+typedef union i4v_t
+{
+	i4v v;
+	int f[4];
+} i4v_t;
 
 typedef struct vector_t
 {
