@@ -12,6 +12,9 @@ void Init_SIMD_IntArray(VALUE parent)
 	rb_define_method(SIMD_IntArray, "/", method_divide, 1);
 	rb_define_method(SIMD_IntArray, "+", method_add, 1);
 	rb_define_method(SIMD_IntArray, "-", method_subtract, 1);
+	rb_define_method(SIMD_IntArray, "&", method_and, 1);
+	rb_define_method(SIMD_IntArray, "|", method_or, 1);
+	rb_define_method(SIMD_IntArray, "^", method_xor, 1);
 	rb_define_method(SIMD_IntArray, "length", method_length, 0);
 	rb_define_method(SIMD_IntArray, "to_a", method_to_a, 0);
 }
@@ -71,6 +74,27 @@ static VALUE method_divide(VALUE self, VALUE obj)
 static VALUE method_add(VALUE self, VALUE obj)
 {
 	return(internal_apply_operation(self, obj, func_add));
+}
+
+/* Public: and values contained in the data array with those contained in
+ * another FloatArray object, returning a new FloatArray. */
+static VALUE method_and(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, func_and));
+}
+
+/* Public: or values contained in the data array with those contained in
+ * another FloatArray object, returning a new FloatArray. */
+static VALUE method_or(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, func_or));
+}
+
+/* Public: xor values contained in the data array with those contained in
+ * another FloatArray object, returning a new FloatArray. */
+static VALUE method_xor(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, func_xor));
 }
 
 /* Public: Subtract values contained in another FloatArray object from those
@@ -178,4 +202,22 @@ static void func_add(void *v1, void *v2, void *r)
 static void func_subtract(void *v1, void *v2, void *r)
 {
 	*(i4v *)r = *(i4v *)v1 - *(i4v *)v2;
+}
+
+/* Function: Perform a binary AND on two vectors. */
+static void func_and(void *v1, void *v2, void *r)
+{
+	*(i4v *)r = *(i4v *)v1 & *(i4v *)v2;
+}
+
+/* Function: Perform a binary OR on two vectors. */
+static void func_or(void *v1, void *v2, void *r)
+{
+	*(i4v *)r = *(i4v *)v1 | *(i4v *)v2;
+}
+
+/* Function: Perform a binary XOR on two vectors. */
+static void func_xor(void *v1, void *v2, void *r)
+{
+	*(i4v *)r = *(i4v *)v1 ^ *(i4v *)v2;
 }

@@ -1,19 +1,6 @@
 #pragma once
 
 /*
- * Types for FloatArray
- *
- * Since ruby internally uses doubles for the Float type, SIMD::FloatArray will
- * use packed double operations by default.
- */
-typedef double __attribute__ ((vector_size (16))) d2v;
-typedef union d2v_t
-{
-	d2v v;
-	double f[2];
-} d2v_t;
-
-/*
  * Types for SmallFloatArray
  *
  * Since ruby internally uses doubles for the Float type, SIMD::SmallFloatArray
@@ -28,6 +15,19 @@ typedef union f4v_t
 } f4v_t;
 
 /*
+ * Types for FloatArray
+ *
+ * Since ruby internally uses doubles for the Float type, SIMD::FloatArray will
+ * use packed double operations by default.
+ */
+typedef double __attribute__ ((vector_size (16))) d2v;
+typedef union d2v_t
+{
+	d2v v;
+	double f[2];
+} d2v_t;
+
+/*
  * Types for IntArray
  */
 typedef int __attribute__ ((vector_size (16))) i4v;
@@ -36,6 +36,16 @@ typedef union i4v_t
 	i4v v;
 	int f[4];
 } i4v_t;
+
+/*
+ * Types for LongArray
+ */
+typedef long int __attribute__ ((vector_size (16))) l2v;
+typedef union l2v_t
+{
+	l2v v;
+	long int f[2];
+} l2v_t;
 
 typedef struct vector_t
 {
