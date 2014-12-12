@@ -2,8 +2,8 @@ require 'helper'
 
 class BaseTests < Test::Unit::TestCase
   def setup
-    @start    = [10.0] * 8
-    @mult     = (1..8).to_a
+    @start    = [250.0] * 8
+    @mult     = [5, 10, 20, 25, 50, 100, 125, 250]
   end
 
   def self.build_tests(klass)
@@ -54,7 +54,7 @@ class BaseTests < Test::Unit::TestCase
 
     define_method :test_cannot_operate_between_even_and_odd_length_vectors do
       veven = klass.new([1,2,3,4])
-      vodd  = klass.new([1,2,3])
+      vodd  = klass.new([1,2,3,4,5])
       assert_raises(ArgumentError) { veven * vodd }
     end
 
