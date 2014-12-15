@@ -11,8 +11,6 @@ static VALUE method_xor(VALUE self, VALUE obj);
 static VALUE method_subtract(VALUE self, VALUE obj);
 static VALUE method_to_a(VALUE self);
 
-static VALUE internal_apply_operation(VALUE self, VALUE obj, b_operation func);
-
 static void func_multiply(void *v1, void *v2, void *r);
 static void func_divide(void *v1, void *v2, void *r);
 static void func_add(void *v1, void *v2, void *r);
