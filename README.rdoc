@@ -3,22 +3,27 @@
 SIMD is a library which exposes basic SIMD functionality for more efficient
 computation.
 
-== Requirements
+== Support
 
 Ruby (MRI) 1.9.3 and later is supported.
 
 == Using SIMD
-=== SIMD Objects
+=== Creating and Using SIMD Objects
 
-SIMD Objects can be created by passing Arrays of compatible objects to their
-appropriate constructors:
+SIMD objects can be created by passing Arrays of compatible objects to their
+appropriate constructors (see below, Available Types):
 
   # Create a SIMD object for Float arithmetic
   simd1 = SIMD::FloatArray.new([1.0, 2.0, 3.0, 4.0])
   simd2 = SIMD::FloatArray.new([2.0, 4.0, 6.0, 8.0])
 
+SIMD objects can be treated as numeric objects once created:
+
   # Extract the result of multiplication of both sets
   simd3 = simd1 * simd2
+
+Use the +to_a+ method to extract data from SIMD objects:
+
   simd3.to_a
   # => [2.0, 8.0, 18.0, 32.0]
 
@@ -27,6 +32,9 @@ appropriate constructors:
 Currently the following types are available:
 
   * double: FloatArray
+  * float:  SmallFloatArray
+  * int:    IntArray
+  * long:   LongArray
 
 == Contributions
 
