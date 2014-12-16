@@ -85,9 +85,10 @@ int internal_align_vectors(unsigned long v1, unsigned long v2, unsigned int modu
 #pragma GCC diagnostic ignored "-Wpointer-arith"
 VALUE internal_apply_operation(VALUE self, VALUE obj, size_t size, VALUE klass, b_operation func)
 {
-	unsigned long length, i;
+	unsigned long length, i, j;
 	int align;
 	vector_t *v1, *v2, *rv;
+	void *data;
 	VALUE result_obj = allocate(klass);
 
 	Data_Get_Struct(self, vector_t, v1);
@@ -115,9 +116,13 @@ VALUE internal_apply_operation(VALUE self, VALUE obj, size_t size, VALUE klass, 
 			}
 			break;
 		default: /* Self is a multiple of operand's length long */
-			for(i = 0; i < length; i++)
+			for(j = 0; j < v2->len; j++)
 			{
-				func((v1->data + XMM_BYTES * i), (v2->data + XMM_BYTES * (i % v2->len)), (rv->data + XMM_BYTES * i));
+				data = v2->data + XMM_BYTES * j;
+				for(i = j; i < length; i+=v2->len)
+				{
+					func((v1->data + XMM_BYTES * i), data, (rv->data + XMM_BYTES * i));
+				}
 			}
 	}
 	internal_sanitize_unaligned_final_vector(rv, size);
