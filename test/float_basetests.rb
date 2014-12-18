@@ -24,6 +24,29 @@ class FloatBaseTests < BaseTests
       assert_equal(expected, result.to_a)
     end
 
+    define_method :test_and do
+      zero_out = klass.new([0] * 8)
+      expected = [0.0] * 8
+      result   = @start_v & zero_out
+
+      assert_equal(expected, result.to_a)
+    end
+
+    define_method :test_or do
+      double_bit = klass.new([1 << 8] * 8)
+      expected = @start.map { |n| n * 2 }
+      result   = @start_v | double_bit
+
+      assert_equal(expected, result.to_a)
+    end
+
+    define_method :test_xor do
+      expected = [0] * 8
+      result   = @start_v ^ @start_v
+
+      assert_equal(expected, result.to_a)
+    end
+
     build_tests(klass)
   end
 end

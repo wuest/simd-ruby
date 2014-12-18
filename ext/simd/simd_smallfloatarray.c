@@ -12,6 +12,9 @@ void Init_SIMD_SmallFloatArray(VALUE parent)
 	rb_define_method(SIMD_SmallFloatArray, "/", method_divide, 1);
 	rb_define_method(SIMD_SmallFloatArray, "+", method_add, 1);
 	rb_define_method(SIMD_SmallFloatArray, "-", method_subtract, 1);
+	rb_define_method(SIMD_SmallFloatArray, "&", method_and, 1);
+	rb_define_method(SIMD_SmallFloatArray, "|", method_or, 1);
+	rb_define_method(SIMD_SmallFloatArray, "^", method_xor, 1);
 	rb_define_method(SIMD_SmallFloatArray, "length", method_length, 0);
 	rb_define_method(SIMD_SmallFloatArray, "to_a", method_to_a, 0);
 }
@@ -75,6 +78,27 @@ static VALUE method_subtract(VALUE self, VALUE obj)
 	return(internal_apply_operation(self, obj, sizeof(float), SIMD_SmallFloatArray, func_subtract));
 }
 
+/* Public: and values contained in the data array with those contained in
+ * another FloatArray object, returning a new FloatArray. */
+static VALUE method_and(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, sizeof(float), SIMD_SmallFloatArray, func_and));
+}
+
+/* Public: or values contained in the data array with those contained in
+ * another FloatArray object, returning a new FloatArray. */
+static VALUE method_or(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, sizeof(float), SIMD_SmallFloatArray, func_or));
+}
+
+/* Public: xor values contained in the data array with those contained in
+ * another FloatArray object, returning a new FloatArray. */
+static VALUE method_xor(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, sizeof(float), SIMD_SmallFloatArray, func_xor));
+}
+
 /* Public: Return a Ruby Array containing the doubles within the data array. */
 static VALUE method_to_a(VALUE self)
 {
@@ -115,4 +139,22 @@ static void func_add(void *v1, void *v2, void *r)
 static void func_subtract(void *v1, void *v2, void *r)
 {
 	*(f4v *)r = *(f4v *)v1 - *(f4v *)v2;
+}
+
+/* Function: Perform a binary AND on two vectors. */
+static void func_and(void *v1, void *v2, void *r)
+{
+	*(i4v *)r = *(i4v *)v1 & *(i4v *)v2;
+}
+
+/* Function: Perform a binary OR on two vectors. */
+static void func_or(void *v1, void *v2, void *r)
+{
+	*(i4v *)r = *(i4v *)v1 | *(i4v *)v2;
+}
+
+/* Function: Perform a binary XOR on two vectors. */
+static void func_xor(void *v1, void *v2, void *r)
+{
+	*(i4v *)r = *(i4v *)v1 ^ *(i4v *)v2;
 }
