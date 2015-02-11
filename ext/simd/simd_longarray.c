@@ -25,7 +25,7 @@ static VALUE method_initialize(VALUE self, VALUE rb_array)
 {
 	vector_t *vector;
 	l2v_t *data;
-	unsigned long n,i;
+	unsigned long long int n,i;
 
 	Check_Type(rb_array, T_ARRAY);
 	Data_Get_Struct(self, vector_t, vector);
@@ -45,7 +45,7 @@ static VALUE method_initialize(VALUE self, VALUE rb_array)
 		data[i/2].f[i%2] = NUM2LONG(rb_ary_entry(rb_array, i));
 	}
 
-	internal_sanitize_unaligned_final_vector(vector, sizeof(long));
+	internal_sanitize_unaligned_final_vector(vector, sizeof(long long int));
 
 	return(self);
 }
@@ -54,55 +54,55 @@ static VALUE method_initialize(VALUE self, VALUE rb_array)
  * another FloatArray object, returning a new FloatArray. */
 static VALUE method_multiply(VALUE self, VALUE obj)
 {
-	return(internal_apply_operation(self, obj, sizeof(long), SIMD_LongArray, func_multiply));
+	return(internal_apply_operation(self, obj, sizeof(long long int), SIMD_LongArray, func_multiply));
 }
 
 /* Public: Divide values contained in the data array by those contained in
  * another FloatArray object, returning a new FloatArray. */
 static VALUE method_divide(VALUE self, VALUE obj)
 {
-	return(internal_apply_operation(self, obj, sizeof(long), SIMD_LongArray, func_divide));
+	return(internal_apply_operation(self, obj, sizeof(long long int), SIMD_LongArray, func_divide));
 }
 
 /* Public: add values contained in the data array with those contained in
  * another FloatArray object, returning a new FloatArray. */
 static VALUE method_add(VALUE self, VALUE obj)
 {
-	return(internal_apply_operation(self, obj, sizeof(long), SIMD_LongArray, func_add));
+	return(internal_apply_operation(self, obj, sizeof(long long int), SIMD_LongArray, func_add));
 }
 
 /* Public: and values contained in the data array with those contained in
  * another FloatArray object, returning a new FloatArray. */
 static VALUE method_and(VALUE self, VALUE obj)
 {
-	return(internal_apply_operation(self, obj, sizeof(long), SIMD_LongArray, func_and));
+	return(internal_apply_operation(self, obj, sizeof(long long int), SIMD_LongArray, func_and));
 }
 
 /* Public: or values contained in the data array with those contained in
  * another FloatArray object, returning a new FloatArray. */
 static VALUE method_or(VALUE self, VALUE obj)
 {
-	return(internal_apply_operation(self, obj, sizeof(long), SIMD_LongArray, func_or));
+	return(internal_apply_operation(self, obj, sizeof(long long int), SIMD_LongArray, func_or));
 }
 
 /* Public: xor values contained in the data array with those contained in
  * another FloatArray object, returning a new FloatArray. */
 static VALUE method_xor(VALUE self, VALUE obj)
 {
-	return(internal_apply_operation(self, obj, sizeof(long), SIMD_LongArray, func_xor));
+	return(internal_apply_operation(self, obj, sizeof(long long int), SIMD_LongArray, func_xor));
 }
 
 /* Public: Subtract values contained in another FloatArray object from those
  * contained in the current data array object, returning a new FloatArray. */
 static VALUE method_subtract(VALUE self, VALUE obj)
 {
-	return(internal_apply_operation(self, obj, sizeof(long), SIMD_LongArray, func_subtract));
+	return(internal_apply_operation(self, obj, sizeof(long long int), SIMD_LongArray, func_subtract));
 }
 
 /* Public: Return a Ruby Array containing the doubles within the data array. */
 static VALUE method_to_a(VALUE self)
 {
-	unsigned long i;
+	unsigned long long int i;
 	vector_t *vector;
 	l2v_t *data;
 	VALUE rb_array = rb_ary_new();
