@@ -22,7 +22,7 @@ static VALUE method_initialize(VALUE self, VALUE rb_array)
 {
 	vector_t *vector;
 	d2v_t *data;
-	unsigned long n,i;
+	unsigned long long int n,i;
 
 	Check_Type(rb_array, T_ARRAY);
 	Data_Get_Struct(self, vector_t, vector);
@@ -78,7 +78,7 @@ static VALUE method_subtract(VALUE self, VALUE obj)
 /* Public: Return a Ruby Array containing the doubles within the data array. */
 static VALUE method_to_a(VALUE self)
 {
-	unsigned long i;
+	unsigned long long int i;
 	vector_t *vector;
 	d2v_t *data;
 	VALUE rb_array = rb_ary_new();

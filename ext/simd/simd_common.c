@@ -38,7 +38,7 @@ VALUE method_length(VALUE self)
 }
 
 /* Internal: Allocate memory for the data array. */
-void *internal_allocate_vector_array(unsigned long count)
+void *internal_allocate_vector_array(unsigned long long int count)
 {
 	void *vector = malloc((count + 1) * XMM_BYTES);
 	if(vector == NULL)
@@ -51,7 +51,7 @@ void *internal_allocate_vector_array(unsigned long count)
 
 /* Internal: Determine if two arrays can be acted upon, by being of equal
  * lengths or with the operand's length being a multiple of the data array's. */
-int internal_align_vectors(unsigned long v1, unsigned long v2, unsigned int modulo)
+int internal_align_vectors(unsigned long long int v1, unsigned long long int v2, unsigned int modulo)
 {
 	if((v1 % modulo) != (v2 % modulo))
 	{
@@ -85,7 +85,7 @@ int internal_align_vectors(unsigned long v1, unsigned long v2, unsigned int modu
 #pragma GCC diagnostic ignored "-Wpointer-arith"
 VALUE internal_apply_operation(VALUE self, VALUE obj, size_t size, VALUE klass, b_operation func)
 {
-	unsigned long length, i, j;
+	unsigned long long int length, i, j;
 	int align;
 	vector_t *v1, *v2, *rv;
 	void *data;
@@ -141,7 +141,7 @@ VALUE internal_apply_operation(VALUE self, VALUE obj, size_t size, VALUE klass, 
 #pragma GCC diagnostic ignored "-Wpointer-arith"
 void internal_sanitize_unaligned_final_vector(vector_t *rv, size_t size)
 {
-	unsigned long i;
+	unsigned long long int i;
 
 	if((rv->len * size) % XMM_BYTES)
 	{

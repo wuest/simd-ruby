@@ -50,7 +50,7 @@ typedef union l2v_t
 typedef struct vector_t
 {
 	void *data;
-	unsigned long len;
+	unsigned long long int len;
 } vector_t;
 
 typedef void (b_operation)(void *v1, void *v2, void *r);
