@@ -40,11 +40,11 @@ typedef union i4v_t
 /*
  * Types for LongArray
  */
-typedef long int __attribute__ ((vector_size (16))) l2v;
+typedef long long int __attribute__ ((vector_size (16))) l2v;
 typedef union l2v_t
 {
 	l2v v;
-	long int f[2];
+	long long int f[2];
 } l2v_t;
 
 typedef struct vector_t
