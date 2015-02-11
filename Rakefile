@@ -1,17 +1,13 @@
 require 'rake/extensiontask'
 require 'rake/testtask'
 
-task default: :conditional_recompile
+task default: :recompile
 
 spec = Gem::Specification.load('simd.gemspec')
 Rake::ExtensionTask.new('simd', spec)
 
 task :recompile do |t|
-  [:clean, :compile].each { |task| Rake::Task[task].invoke }
-end
-
-task :conditional_recompile do |t|
-  [:test, :recompile].each { |task| Rake::Task[task].invoke }
+  [:clean, :compile, :test].each { |task| Rake::Task[task].invoke }
 end
 
 Rake::TestTask.new(:test) do |t|
