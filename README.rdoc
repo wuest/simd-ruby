@@ -47,4 +47,4 @@ Contributions are welcome!  To contribute to the project, please:
 
 == Copyright
 
-Copyright © 2014 Tina Wuest under the MIT license.  See LICENSE for details.
+Copyright © 2014-2018 Tina Wuest under the MIT license.  See LICENSE for details.
