@@ -234,11 +234,11 @@ static void func_ltc(void *v1, void *v2, void *r)
 /* Function: Return Less Than Vector */
 static void func_ltd(void *v1, void *v2, void *r)
 {
-	*(d2v *)r = (*(d2v *)v1 >> 31);
+	*(d2v *)r = (*(d2v *)v1 >> *(d2v *)v2);
 }
 
 /* Function: Return Less Than Vector */
 static void func_lte(void *v1, void *v2, void *r)
 {
-	*(d2v *)r = (*(d2v *)v1 << 31);
+	*(d2v *)r = (*(d2v *)v1 << *(d2v *)v2);
 }
