@@ -216,7 +216,7 @@ static void func_lt(void *v1, void *v2, void *r)
 /* Function: Return Less Than Vector */
 static void func_lta(void *v1, void *v2, void *r)
 {
-	*(f4v *)r = (*(d2v *)v1 < *(d2v *)v2);
+	*(b4v *)r = (*(d2v *)v1 < *(d2v *)v2);
 }
 
 /* Function: Return Less Than Vector */
