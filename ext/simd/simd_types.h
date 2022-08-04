@@ -40,7 +40,7 @@ typedef union i4v_t
 /*
  * Types for BooleanArray
  */
-typedef bool __attribute__ ((vector_size (16))) bv;
+typedef bool bv;
 typedef union bv_t
 {
 	bv v;
