@@ -170,5 +170,5 @@ static void func_xor(void *v1, void *v2, void *r)
 /* Function: Return larger vector */
 static void func_max(void *v1, void *v2, void *r)
 {
-	*(d2v *)r = ((*(d2v *)v1 > *(d2v *)v2) == true) ? *(d2v *)v1 : *(d2v *)v2;
+	*(bv *)r = *(d2v *)v1 > *(d2v *)v2
 }

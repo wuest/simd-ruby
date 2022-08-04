@@ -38,6 +38,16 @@ typedef union i4v_t
 } i4v_t;
 
 /*
+ * Types for BooleanArray
+ */
+typedef bool __attribute__ ((vector_size (16))) bv;
+typedef union bv_t
+{
+	bv v;
+	bool;
+} bv_t;
+
+/*
  * Types for LongArray
  */
 typedef long long int __attribute__ ((vector_size (16))) l2v;
