@@ -17,11 +17,11 @@ void Init_SIMD_FloatArray(VALUE parent)
 	rb_define_method(SIMD_FloatArray, "^", method_xor, 1);
 	rb_define_method(SIMD_FloatArray, "gt", method_gt, 1);
 	rb_define_method(SIMD_FloatArray, "lt", method_lt, 1);
-	rb_define_method(SIMD_FloatArray, "lta", method_lt, 1);
-	rb_define_method(SIMD_FloatArray, "ltb", method_lt, 1);
-	rb_define_method(SIMD_FloatArray, "ltc", method_lt, 1);
-	rb_define_method(SIMD_FloatArray, "ltd", method_lt, 1);
-	rb_define_method(SIMD_FloatArray, "lte", method_lt, 1);
+	rb_define_method(SIMD_FloatArray, "lta", method_lta, 1);
+	rb_define_method(SIMD_FloatArray, "ltb", method_ltb, 1);
+	rb_define_method(SIMD_FloatArray, "ltc", method_ltc, 1);
+	rb_define_method(SIMD_FloatArray, "ltd", method_ltd, 1);
+	rb_define_method(SIMD_FloatArray, "lte", method_lte, 1);
 	rb_define_method(SIMD_FloatArray, "length", method_length, 0);
 	rb_define_method(SIMD_FloatArray, "to_a", method_to_a, 0);
 }
