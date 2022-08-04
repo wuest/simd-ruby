@@ -1,8 +1,7 @@
-#pragma once
 #include "ruby.h"
 #include "simd_common.h"
 
-VALUE SIMD_LongArray;
+extern VALUE SIMD_LongArray;
 
 static VALUE method_initialize(VALUE self, VALUE rb_array);
 static VALUE method_multiply(VALUE self, VALUE obj);
