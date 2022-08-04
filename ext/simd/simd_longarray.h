@@ -1,3 +1,4 @@
+#pragma once
 #include "ruby.h"
 #include "simd_common.h"
 
