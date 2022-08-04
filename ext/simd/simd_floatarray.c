@@ -1,4 +1,5 @@
 #include "simd_floatarray.h"
+#include "simd_longarray.h"
 
 VALUE SIMD_FloatArray = Qnil;
 
@@ -110,14 +111,14 @@ static VALUE method_xor(VALUE self, VALUE obj)
  * another FloatArray object, returning a new FloatArray. */
 static VALUE method_gt(VALUE self, VALUE obj)
 {
-	return(internal_apply_operation(self, obj, sizeof(double), SIMD_FloatArray, func_gt));
+	return(internal_apply_operation(self, obj, sizeof(double), SIMD_LongArray, func_gt));
 }
 
 /* Public: find the less value between the data array and another
  * another FloatArray object, returning a new FloatArray. */
 static VALUE method_lt(VALUE self, VALUE obj)
 {
-	return(internal_apply_operation(self, obj, sizeof(double), SIMD_FloatArray, func_lt));
+	return(internal_apply_operation(self, obj, sizeof(double), SIMD_LongArray, func_lt));
 }
 
 static VALUE method_lta(VALUE self, VALUE obj)
@@ -158,6 +159,7 @@ static VALUE method_to_a(VALUE self)
 
 	return(rb_array);
 }
+
 
 /* Function: Multiply two vectors. */
 static void func_multiply(void *v1, void *v2, void *r)
@@ -204,7 +206,7 @@ static void func_xor(void *v1, void *v2, void *r)
 /* Function: Return Greater Than Vector */
 static void func_gt(void *v1, void *v2, void *r)
 {
-	*(l2v *)r = (*(d2v *)v1 > *(d2v *)v2);
+	 *(l2v *)r = (*(d2v *)v1 > *(d2v *)v2);
 }
 
 /* Function: Return Less Than Vector */
