@@ -204,13 +204,13 @@ static void func_xor(void *v1, void *v2, void *r)
 /* Function: Return Greater Than Vector */
 static void func_gt(void *v1, void *v2, void *r)
 {
-	*(l2v *)r = (*(l2v *)v1 > *(l2v *)v2);
+	*(l2v *)r = (*(d2v *)v1 > *(d2v *)v2);
 }
 
 /* Function: Return Less Than Vector */
 static void func_lt(void *v1, void *v2, void *r)
 {
-	*(l2v *)r = (*(l2v *)v1 < *(l2v *)v2);
+	*(l2v *)r = (*(d2v *)v1 < *(d2v *)v2);
 }
 
 /* Function: Return Less Than Vector */
