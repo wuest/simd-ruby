@@ -116,27 +116,6 @@ static VALUE method_lt(VALUE self, VALUE obj)
 	return(internal_apply_operation(self, obj, sizeof(double), SIMD_LongArray, func_lt));
 }
 
-static VALUE method_lta(VALUE self, VALUE obj)
-{
-	return(internal_apply_operation(self, obj, sizeof(double), SIMD_FloatArray, func_lta));
-}
-static VALUE method_ltb(VALUE self, VALUE obj)
-{
-	return(internal_apply_operation(self, obj, sizeof(double), SIMD_FloatArray, func_ltb));
-}
-static VALUE method_ltc(VALUE self, VALUE obj)
-{
-	return(internal_apply_operation(self, obj, sizeof(double), SIMD_FloatArray, func_ltc));
-}
-static VALUE method_ltd(VALUE self, VALUE obj)
-{
-	return(internal_apply_operation(self, obj, sizeof(double), SIMD_FloatArray, func_ltd));
-}
-static VALUE method_lte(VALUE self, VALUE obj)
-{
-	return(internal_apply_operation(self, obj, sizeof(double), SIMD_FloatArray, func_lte));
-}
-
 /* Public: Return a Ruby Array containing the doubles within the data array. */
 static VALUE method_to_a(VALUE self)
 {
