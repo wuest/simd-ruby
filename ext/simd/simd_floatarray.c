@@ -103,14 +103,14 @@ static VALUE method_xor(VALUE self, VALUE obj)
 }
 
 /* Public: find the larger value between the data array and another
- * another FloatArray object, returning a new FloatArray. */
+ * another FloatArray object, returning a new LongArray. */
 static VALUE method_gt(VALUE self, VALUE obj)
 {
 	return(internal_apply_operation(self, obj, sizeof(double), SIMD_LongArray, func_gt));
 }
 
 /* Public: find the less value between the data array and another
- * another FloatArray object, returning a new FloatArray. */
+ * another FloatArray object, returning a new LongArray. */
 static VALUE method_lt(VALUE self, VALUE obj)
 {
 	return(internal_apply_operation(self, obj, sizeof(double), SIMD_LongArray, func_lt));
