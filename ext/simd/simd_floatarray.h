@@ -11,14 +11,6 @@ static VALUE method_or(VALUE self, VALUE obj);
 static VALUE method_xor(VALUE self, VALUE obj);
 static VALUE method_gt(VALUE self, VALUE obj);
 static VALUE method_lt(VALUE self, VALUE obj);
-
-
-static VALUE method_lta(VALUE self, VALUE obj);
-static VALUE method_ltb(VALUE self, VALUE obj);
-static VALUE method_ltc(VALUE self, VALUE obj);
-static VALUE method_ltd(VALUE self, VALUE obj);
-static VALUE method_lte(VALUE self, VALUE obj);
-
 static VALUE method_to_a(VALUE self);
 
 static void func_multiply(void *v1, void *v2, void *r);
@@ -30,10 +22,3 @@ static void func_or(void *v1, void *v2, void *r);
 static void func_xor(void *v1, void *v2, void *r);
 static void func_gt(void *v1, void *v2, void *r);
 static void func_lt(void *v1, void *v2, void *r);
-
-
-static void func_lta(void *v1, void *v2, void *r);
-static void func_ltb(void *v1, void *v2, void *r);
-static void func_ltc(void *v1, void *v2, void *r);
-static void func_ltd(void *v1, void *v2, void *r);
-static void func_lte(void *v1, void *v2, void *r);

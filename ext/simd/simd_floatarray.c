@@ -18,11 +18,6 @@ void Init_SIMD_FloatArray(VALUE parent)
 	rb_define_method(SIMD_FloatArray, "^", method_xor, 1);
 	rb_define_method(SIMD_FloatArray, "gt", method_gt, 1);
 	rb_define_method(SIMD_FloatArray, "lt", method_lt, 1);
-	rb_define_method(SIMD_FloatArray, "lta", method_lta, 1);
-	rb_define_method(SIMD_FloatArray, "ltb", method_ltb, 1);
-	rb_define_method(SIMD_FloatArray, "ltc", method_ltc, 1);
-	rb_define_method(SIMD_FloatArray, "ltd", method_ltd, 1);
-	rb_define_method(SIMD_FloatArray, "lte", method_lte, 1);
 	rb_define_method(SIMD_FloatArray, "length", method_length, 0);
 	rb_define_method(SIMD_FloatArray, "to_a", method_to_a, 0);
 }
@@ -213,34 +208,4 @@ static void func_gt(void *v1, void *v2, void *r)
 static void func_lt(void *v1, void *v2, void *r)
 {
 	*(l2v *)r = (*(d2v *)v1 < *(d2v *)v2);
-}
-
-/* Function: Return Less Than Vector */
-static void func_lta(void *v1, void *v2, void *r)
-{
-	*(d2v *)r = (*(d2v *)v1 < *(d2v *)v2);
-}
-
-/* Function: Return Less Than Vector */
-static void func_ltb(void *v1, void *v2, void *r)
-{
-	*(d2v *)r = (*(d2v *)v1 < *(d2v *)v2);
-}
-
-/* Function: Return Less Than Vector */
-static void func_ltc(void *v1, void *v2, void *r)
-{
-	*(i4v *)r = (*(d2v *)v1 < *(d2v *)v2);
-}
-
-/* Function: Return Less Than Vector */
-static void func_ltd(void *v1, void *v2, void *r)
-{
-	*(l2v *)r = (*(l2v *)v1 >> *(l2v *)v2);
-}
-
-/* Function: Return Less Than Vector */
-static void func_lte(void *v1, void *v2, void *r)
-{
-	*(l2v *)r = (*(l2v *)v1 << *(l2v *)v2);
 }
