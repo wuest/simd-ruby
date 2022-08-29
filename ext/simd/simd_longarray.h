@@ -1,6 +1,8 @@
 #include "ruby.h"
 #include "simd_common.h"
 
+extern VALUE SIMD_LongArray;
+
 static VALUE method_initialize(VALUE self, VALUE rb_array);
 static VALUE method_multiply(VALUE self, VALUE obj);
 static VALUE method_divide(VALUE self, VALUE obj);

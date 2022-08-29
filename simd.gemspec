@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'simd'
-  s.version = '0.5.1'
+  s.version = '0.5.2'
 
   s.description = 'Access to SIMD (Single Instruction Multiple Data) instructions in Ruby'
   s.summary     = 'SIMD instructions in ruby'
