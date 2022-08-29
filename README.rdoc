@@ -5,7 +5,7 @@ computation.
 
 == Support
 
-Ruby (MRI) 1.9.3 and later is supported.
+Ruby (MRI) 2.7 and later is supported.
 
 == Using SIMD
 === Creating and Using SIMD Objects
@@ -36,6 +36,12 @@ Currently the following types are available:
   * int:    IntArray
   * long:   LongArray
 
+=== Comparison
+
+Comparison operators are supported, with behavior not adapted from platform
+behavior.  On x86/amd64, the result of a comparison will be -1 if the comparison
+succeeds, and 0 otherwise.
+
 == Contributions
 
 Contributions are welcome!  To contribute to the project, please:
@@ -47,4 +53,4 @@ Contributions are welcome!  To contribute to the project, please:
 
 == Copyright
 
-Copyright © 2014-2018 Tina Wuest under the MIT license.  See LICENSE for details.
+Copyright © 2014-2022 Tina Wuest under the MIT license.  See LICENSE for details.
