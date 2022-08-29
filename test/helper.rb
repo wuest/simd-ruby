@@ -26,6 +26,36 @@ class BaseTests < Test::Unit::TestCase
       assert_equal(expected, result.to_a)
     end
 
+    define_method :test_comparisons do
+      expected_gt   = @start.zip(@mult).map { |x,y| x > y ? -1 : 0 }
+      expected_lt   = @start.zip(@mult).map { |x,y| x < y ? -1 : 0 }
+      expected_zero = @start.map { |_| 0 }
+
+      # Make sure equality works
+      result_gt = @start_v.gt(@start_v)
+      result_lt = @start_v.lt(@start_v)
+      assert_equal(expected_zero, result_gt.to_a)
+      assert_equal(expected_zero, result_lt.to_a)
+
+      # Make sure that < and > work as well
+      result_gt = @start_v > @start_v
+      result_lt = @start_v < @start_v
+      assert_equal(expected_zero, result_gt.to_a)
+      assert_equal(expected_zero, result_lt.to_a)
+
+      # Verify comparisons
+      result_gt = @start_v > @mult_v
+      result_lt = @start_v < @mult_v
+      assert_equal(expected_gt, result_gt.to_a)
+      assert_equal(expected_lt, result_lt.to_a)
+
+      # Verify that inverse works as expected
+      result_gt = @mult_v > @start_v
+      result_lt = @mult_v < @start_v
+      assert_equal(expected_lt, result_gt.to_a)
+      assert_equal(expected_gt, result_lt.to_a)
+    end
+
     define_method :test_cannot_operate_between_even_and_odd_length_vectors do
       veven = klass.new([1,2,3,4])
       vodd  = klass.new([1,2,3,4,5])

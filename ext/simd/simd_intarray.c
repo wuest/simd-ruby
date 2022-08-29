@@ -15,6 +15,10 @@ void Init_SIMD_IntArray(VALUE parent)
 	rb_define_method(SIMD_IntArray, "&", method_and, 1);
 	rb_define_method(SIMD_IntArray, "|", method_or, 1);
 	rb_define_method(SIMD_IntArray, "^", method_xor, 1);
+	rb_define_method(SIMD_IntArray, "gt", method_gt, 1);
+	rb_define_method(SIMD_IntArray, "lt", method_lt, 1);
+	rb_define_method(SIMD_IntArray, ">", method_gt, 1);
+	rb_define_method(SIMD_IntArray, "<", method_lt, 1);
 	rb_define_method(SIMD_IntArray, "length", method_length, 0);
 	rb_define_method(SIMD_IntArray, "to_a", method_to_a, 0);
 }
@@ -92,6 +96,22 @@ static VALUE method_xor(VALUE self, VALUE obj)
 	return(internal_apply_operation(self, obj, sizeof(int), SIMD_IntArray, func_xor));
 }
 
+/* Public: Compare values contained in the data array with those contained in
+ * another IntArray object, return a new IntArray with each element being -1
+ * if the data array's value is greater, and 0 otherwise. */
+static VALUE method_gt(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, sizeof(int), SIMD_IntArray, func_gt));
+}
+
+/* Public: Compare values contained in the data array with those contained in
+ * another IntArray object, return a new IntArray with each element being -1 if
+ * the data array's value is less, and 0 otherwise. */
+static VALUE method_lt(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, sizeof(int), SIMD_IntArray, func_lt));
+}
+
 /* Public: Subtract values contained in another FloatArray object from those
  * contained in the current data array object, returning a new FloatArray. */
 static VALUE method_subtract(VALUE self, VALUE obj)
@@ -157,4 +177,16 @@ static void func_or(void *v1, void *v2, void *r)
 static void func_xor(void *v1, void *v2, void *r)
 {
 	*(i4v *)r = *(i4v *)v1 ^ *(i4v *)v2;
+}
+
+/* Function: Compare vectors, return -1 if v1 is greater than v2, 0 otherwise */
+static void func_gt(void *v1, void *v2, void *r)
+{
+	*(i4v *)r = (*(i4v *)v1 > *(i4v *)v2);
+}
+
+/* Function: Compare vectors, return -1 if v1 is less than v2, 0 otherwise */
+static void func_lt(void *v1, void *v2, void *r)
+{
+	*(i4v *)r = (*(i4v *)v1 < *(i4v *)v2);
 }
