@@ -11,5 +11,5 @@ Gem::Specification.new do |s|
   s.files = `git ls-files ext`.split("\n")
   s.extensions = 'ext/simd/extconf.rb'
 
-  s.add_development_dependency 'rake-compiler'
+  s.add_development_dependency 'rake-compiler', '~> 1.2'
 end
