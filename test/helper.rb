@@ -1,9 +1,10 @@
-require 'test/unit'
+require 'minitest'
+require 'minitest/autorun'
 require 'simd'
 
 $LOAD_PATH.unshift File.dirname(__FILE__)
 
-class BaseTests < Test::Unit::TestCase
+class BaseTests < Minitest::Test
   def self.build_tests(klass)
     define_method :test_multiplication do
       expected = @start.zip(@mult).each_with_object(:*).map(&:reduce)

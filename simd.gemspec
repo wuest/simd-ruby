@@ -6,10 +6,11 @@ Gem::Specification.new do |s|
   s.summary     = 'SIMD instructions in ruby'
   s.authors     = ['Tina Wuest']
   s.email       = 'tina@wuest.me'
-  s.homepage    = 'https://gitlab.com/wuest/simd-ruby'
+  s.homepage    = 'https://github.com/wuest/simd-ruby'
 
   s.files = `git ls-files ext`.split("\n")
   s.extensions = 'ext/simd/extconf.rb'
 
   s.add_development_dependency 'rake-compiler', '~> 1.2'
+  s.add_development_dependency 'minitest-proptest', '~> 0.0'
 end
