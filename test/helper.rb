@@ -1,5 +1,6 @@
 require 'minitest'
 require 'minitest/autorun'
+require 'minitest/proptest_plugin'
 require 'simd'
 
 $LOAD_PATH.unshift File.dirname(__FILE__)
