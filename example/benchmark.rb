@@ -64,7 +64,7 @@ modes.each do |mode, args|
     puts " *** #{name} ***"
 
     Benchmark.bm do |b|
-      b.report('SIMD') { iter.times { s1 * s2 } }
+      b.report('SIMD') { iter.times { s1.method(op).call(s2) } }
       b.report('SISD') do
         iter.times do
           a1.each_with_index(&(sisd_loop(op, modulo, sisd, Array.new)))
@@ -73,4 +73,14 @@ modes.each do |mode, args|
     end
   end
   puts
+end
+
+puts " *** Square root calculation *** "
+Benchmark.bm do |b|
+  b.report('SIMD') { iter.times { s1.sqrt } }
+  b.report('SISD') do
+    iter.times do
+      a1.map(&Math.method(:sqrt))
+    end
+  end
 end
