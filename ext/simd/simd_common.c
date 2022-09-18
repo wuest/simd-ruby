@@ -131,6 +131,34 @@ VALUE internal_apply_operation(VALUE self, VALUE obj, size_t size, VALUE klass, 
 }
 #pragma GCC diagnostic pop
 
+/* Internal: Perform an unary operation across one vector.
+ *
+ * As above, disable warnings regarding this for the current function. */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpointer-arith"
+VALUE internal_apply_unary_operation(VALUE self, size_t size, VALUE klass, u_operation func)
+{
+	unsigned long long int length, i;
+	vector_t *v1, *rv;
+	VALUE result_obj = allocate(klass);
+
+	Data_Get_Struct(self, vector_t, v1);
+	Data_Get_Struct(result_obj, vector_t, rv);
+	rv->data = internal_allocate_vector_array(v1->len);
+
+	length = ((v1->len + (XMM_BYTES / size - 1)) / (XMM_BYTES / size));
+	rv->len = v1->len;
+
+	for(i = 0; i < length; i++)
+	{
+		func((v1->data + XMM_BYTES * i), (rv->data + XMM_BYTES * i));
+	}
+	internal_sanitize_unaligned_final_vector(rv, size);
+
+	return(result_obj);
+}
+#pragma GCC diagnostic pop
+
 /* Internal: Make sure that no null bytes exist beyond the boundary of
  * unaligned vectors.  This function should be called after any operation that
  * results in the mutation or creation of a vector array.

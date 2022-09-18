@@ -13,6 +13,7 @@ void Init_SIMD_SmallFloatArray(VALUE parent)
 	rb_define_method(SIMD_SmallFloatArray, "/", method_divide, 1);
 	rb_define_method(SIMD_SmallFloatArray, "+", method_add, 1);
 	rb_define_method(SIMD_SmallFloatArray, "-", method_subtract, 1);
+	rb_define_method(SIMD_SmallFloatArray, "sqrt", method_sqrt, 0);
 	rb_define_method(SIMD_SmallFloatArray, "&", method_and, 1);
 	rb_define_method(SIMD_SmallFloatArray, "|", method_or, 1);
 	rb_define_method(SIMD_SmallFloatArray, "^", method_xor, 1);
@@ -81,6 +82,13 @@ static VALUE method_add(VALUE self, VALUE obj)
 static VALUE method_subtract(VALUE self, VALUE obj)
 {
 	return(internal_apply_operation(self, obj, sizeof(float), SIMD_SmallFloatArray, func_subtract));
+}
+
+/* Public: Compute the square root of values contained in a SmallFloatArray
+ * object, returning a new SmallFloatArray. */
+static VALUE method_sqrt(VALUE self)
+{
+	return(internal_apply_unary_operation(self, sizeof(float), SIMD_SmallFloatArray, func_sqrt));
 }
 
 /* Public: and values contained in the data array with those contained in
@@ -160,6 +168,15 @@ static void func_add(void *v1, void *v2, void *r)
 static void func_subtract(void *v1, void *v2, void *r)
 {
 	*(f4v *)r = *(f4v *)v1 - *(f4v *)v2;
+}
+
+/* Function: Compute square root for a vector. */
+static void func_sqrt(void *v1, void *r)
+{
+	(*(f4v *)r)[0] = sqrt((*(f4v *)v1)[0]);
+	(*(f4v *)r)[1] = sqrt((*(f4v *)v1)[1]);
+	(*(f4v *)r)[2] = sqrt((*(f4v *)v1)[2]);
+	(*(f4v *)r)[3] = sqrt((*(f4v *)v1)[3]);
 }
 
 /* Function: Perform a binary AND on two vectors. */

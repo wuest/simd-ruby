@@ -1,4 +1,5 @@
 #include "simd_intarray.h"
+#include "simd_smallfloatarray.h"
 
 VALUE SIMD_IntArray = Qnil;
 
@@ -12,6 +13,7 @@ void Init_SIMD_IntArray(VALUE parent)
 	rb_define_method(SIMD_IntArray, "/", method_divide, 1);
 	rb_define_method(SIMD_IntArray, "+", method_add, 1);
 	rb_define_method(SIMD_IntArray, "-", method_subtract, 1);
+	rb_define_method(SIMD_IntArray, "sqrt", method_sqrt, 0);
 	rb_define_method(SIMD_IntArray, "&", method_and, 1);
 	rb_define_method(SIMD_IntArray, "|", method_or, 1);
 	rb_define_method(SIMD_IntArray, "^", method_xor, 1);
@@ -68,6 +70,20 @@ static VALUE method_divide(VALUE self, VALUE obj)
 	return(internal_apply_operation(self, obj, sizeof(int), SIMD_IntArray, func_divide));
 }
 
+/* Public: Subtract values contained in another FloatArray object from those
+ * contained in the current data array object, returning a new FloatArray. */
+static VALUE method_subtract(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, sizeof(int), SIMD_IntArray, func_subtract));
+}
+
+/* Public: Compute the square root of values contained in a IntArray object,
+ * returning a new SmallFloatArray. */
+static VALUE method_sqrt(VALUE self)
+{
+	return(internal_apply_unary_operation(self, sizeof(int), SIMD_SmallFloatArray, func_sqrt));
+}
+
 /* Public: add values contained in the data array with those contained in
  * another FloatArray object, returning a new FloatArray. */
 static VALUE method_add(VALUE self, VALUE obj)
@@ -112,13 +128,6 @@ static VALUE method_lt(VALUE self, VALUE obj)
 	return(internal_apply_operation(self, obj, sizeof(int), SIMD_IntArray, func_lt));
 }
 
-/* Public: Subtract values contained in another FloatArray object from those
- * contained in the current data array object, returning a new FloatArray. */
-static VALUE method_subtract(VALUE self, VALUE obj)
-{
-	return(internal_apply_operation(self, obj, sizeof(int), SIMD_IntArray, func_subtract));
-}
-
 /* Public: Return a Ruby Array containing the doubles within the data array. */
 static VALUE method_to_a(VALUE self)
 {
@@ -159,6 +168,15 @@ static void func_add(void *v1, void *v2, void *r)
 static void func_subtract(void *v1, void *v2, void *r)
 {
 	*(i4v *)r = *(i4v *)v1 - *(i4v *)v2;
+}
+
+/* Function: Compute square root for a vector. */
+static void func_sqrt(void *v1, void *r)
+{
+	(*(f4v *)r)[0] = sqrt((*(i4v *)v1)[0]);
+	(*(f4v *)r)[1] = sqrt((*(i4v *)v1)[1]);
+	(*(f4v *)r)[2] = sqrt((*(i4v *)v1)[2]);
+	(*(f4v *)r)[3] = sqrt((*(i4v *)v1)[3]);
 }
 
 /* Function: Perform a binary AND on two vectors. */

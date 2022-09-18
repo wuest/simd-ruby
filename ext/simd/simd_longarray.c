@@ -1,4 +1,5 @@
 #include "simd_longarray.h"
+#include "simd_floatarray.h"
 
 VALUE SIMD_LongArray = Qnil;
 
@@ -12,6 +13,7 @@ void Init_SIMD_LongArray(VALUE parent)
 	rb_define_method(SIMD_LongArray, "/", method_divide, 1);
 	rb_define_method(SIMD_LongArray, "+", method_add, 1);
 	rb_define_method(SIMD_LongArray, "-", method_subtract, 1);
+	rb_define_method(SIMD_LongArray, "sqrt", method_sqrt, 0);
 	rb_define_method(SIMD_LongArray, "&", method_and, 1);
 	rb_define_method(SIMD_LongArray, "|", method_or, 1);
 	rb_define_method(SIMD_LongArray, "^", method_xor, 1);
@@ -75,6 +77,20 @@ static VALUE method_add(VALUE self, VALUE obj)
 	return(internal_apply_operation(self, obj, sizeof(long long int), SIMD_LongArray, func_add));
 }
 
+/* Public: Subtract values contained in another FloatArray object from those
+ * contained in the current data array object, returning a new FloatArray. */
+static VALUE method_subtract(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, sizeof(long long int), SIMD_LongArray, func_subtract));
+}
+
+/* Public: Compute the square root of values contained in a LongArray object,
+ * returning a new FloatArray. */
+static VALUE method_sqrt(VALUE self)
+{
+	return(internal_apply_unary_operation(self, sizeof(long long int), SIMD_FloatArray, func_sqrt));
+}
+
 /* Public: and values contained in the data array with those contained in
  * another FloatArray object, returning a new FloatArray. */
 static VALUE method_and(VALUE self, VALUE obj)
@@ -110,13 +126,6 @@ static VALUE method_gt(VALUE self, VALUE obj)
 static VALUE method_lt(VALUE self, VALUE obj)
 {
 	return(internal_apply_operation(self, obj, sizeof(long long int), SIMD_LongArray, func_lt));
-}
-
-/* Public: Subtract values contained in another FloatArray object from those
- * contained in the current data array object, returning a new FloatArray. */
-static VALUE method_subtract(VALUE self, VALUE obj)
-{
-	return(internal_apply_operation(self, obj, sizeof(long long int), SIMD_LongArray, func_subtract));
 }
 
 /* Public: Return a Ruby Array containing the doubles within the data array. */
@@ -159,6 +168,13 @@ static void func_add(void *v1, void *v2, void *r)
 static void func_subtract(void *v1, void *v2, void *r)
 {
 	*(l2v *)r = *(l2v *)v1 - *(l2v *)v2;
+}
+
+/* Function: Compute square root for a vector. */
+static void func_sqrt(void *v1, void *r)
+{
+	(*(d2v *)r)[0] = sqrt((*(l2v *)v1)[0]);
+	(*(d2v *)r)[1] = sqrt((*(l2v *)v1)[1]);
 }
 
 /* Function: Perform a binary AND on two vectors. */

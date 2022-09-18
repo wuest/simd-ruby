@@ -54,3 +54,4 @@ typedef struct vector_t
 } vector_t;
 
 typedef void (b_operation)(void *v1, void *v2, void *r);
+typedef void (u_operation)(void *v1, void *r);

@@ -58,6 +58,14 @@ class BaseTests < Minitest::Test
       assert_equal(expected_gt, result_lt.to_a)
     end
 
+    define_method :test_square_root do
+      under_test = klass.new([4, 9, 16, 25])
+      expected   = [2, 3, 4, 5]
+      result     = under_test.sqrt
+
+      assert_equal(expected, result.to_a)
+    end
+
     define_method :test_cannot_operate_between_even_and_odd_length_vectors do
       veven = klass.new([1,2,3,4])
       vodd  = klass.new([1,2,3,4,5])
