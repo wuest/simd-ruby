@@ -7,6 +7,11 @@ Gem::Specification.new do |s|
   s.authors     = ['Tina Wuest']
   s.email       = 'tina@wuest.me'
   s.homepage    = 'https://github.com/wuest/simd-ruby'
+  s.license     = 'MIT'
+
+  s.metadata['homepage_uri'] = s.homepage
+  s.metadata['source_code_uri'] = s.homepage
+  s.metadata['changelog_uri'] = 'https://github.com/wuest/simd-ruby/blob/main/CHANGELOG.md'
 
   s.files = `git ls-files ext`.split("\n")
   s.extensions = 'ext/simd/extconf.rb'
