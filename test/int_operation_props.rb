@@ -113,6 +113,23 @@ class IntOperationsProps < IntBaseTests
     end
   end
 
+  # Short integer sqrt not tested due to it being infeasible to easily convert
+  # from Ruby's internal double after calculating the square root to a Float32
+  # in order to achieving the same results as performing square root targeting
+  # a Float32
+  def test_sqare_root
+    property do
+      xs = (arbitrary Array, Int64).map(&:abs)
+
+      if xs.length > 2
+        a = SIMD::LongArray.new(xs)
+        a.sqrt.to_a == xs.map { |a| Math.sqrt(a) }
+      else
+        true
+      end
+    end
+  end
+
   def test_bitwise
     property do
       xs = (arbitrary Array, Int32).zip(arbitrary Array, Int32)

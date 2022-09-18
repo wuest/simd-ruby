@@ -13,4 +13,10 @@ class TestIntArray < IntBaseTests
     assert_raises(ArgumentError) { SIMD::IntArray.new([1,2]) }
     assert_raises(ArgumentError) { SIMD::IntArray.new([1,2,3]) }
   end
+
+  def test_sqrt_returns_smallfloat_array
+    roots    = SIMD::IntArray.new([4, 9, 16, 25]).sqrt.to_a
+    expected = [2.0, 3.0, 4.0, 5.0]
+    assert roots.zip(expected).all? { |a, b| a.eql?(b) }
+  end
 end

@@ -131,6 +131,22 @@ class FloatOperationsProps < IntBaseTests
     end
   end
 
+  # As above, single precision not tested
+  def test_square_root
+    property do
+      xs = (arbitrary Array, Float64)
+        .reject { |a| a.nan? || a.infinite? }
+        .map(&:abs)
+
+      if xs.length > 2
+        a = SIMD::FloatArray.new(xs)
+        a.sqrt.to_a == xs.map { |a| Math.sqrt(a) }
+      else
+        true
+      end
+    end
+  end
+
   def test_comparison
     property do
       xs = (arbitrary Array, Float32)
