@@ -1,6 +1,7 @@
 ## [0.6.0] - 2022-
 - Add support for sqrt
 - Complete support for equality checking (eq, geq, leq)
+- Add CI via GitHub Actions
 
 ## [0.5.2] - 2022-08-29
 
