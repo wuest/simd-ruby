@@ -1,3 +1,7 @@
+## [0.6.0] - 2022-
+- Add support for sqrt
+- Complete support for equality checking (eq, geq, leq)
+
 ## [0.5.2] - 2022-08-29
 
 - Added partial comparison operator support

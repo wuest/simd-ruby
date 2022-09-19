@@ -19,8 +19,14 @@ void Init_SIMD_FloatArray(VALUE parent)
 	rb_define_method(SIMD_FloatArray, "^", method_xor, 1);
 	rb_define_method(SIMD_FloatArray, "gt", method_gt, 1);
 	rb_define_method(SIMD_FloatArray, "lt", method_lt, 1);
+	rb_define_method(SIMD_FloatArray, "gte", method_gte, 1);
+	rb_define_method(SIMD_FloatArray, "lte", method_lte, 1);
 	rb_define_method(SIMD_FloatArray, ">", method_gt, 1);
 	rb_define_method(SIMD_FloatArray, "<", method_lt, 1);
+	rb_define_method(SIMD_FloatArray, ">=", method_gte, 1);
+	rb_define_method(SIMD_FloatArray, "<=", method_lte, 1);
+	rb_define_method(SIMD_FloatArray, "eq", method_eq, 1);
+	rb_define_method(SIMD_FloatArray, "neq", method_neq, 1);
 	rb_define_method(SIMD_FloatArray, "length", method_length, 0);
 	rb_define_method(SIMD_FloatArray, "to_a", method_to_a, 0);
 }
@@ -128,6 +134,38 @@ static VALUE method_lt(VALUE self, VALUE obj)
 	return(internal_apply_operation(self, obj, sizeof(double), SIMD_LongArray, func_lt));
 }
 
+/* Public: Compare values contained in the data array with those contained in
+ * another FloatArray object, return a new LongArray with each element being -1
+ * if the data array's value is greater or equal, and 0 otherwise. */
+static VALUE method_gte(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, sizeof(double), SIMD_LongArray, func_gte));
+}
+
+/* Public: Compare values contained in the data array with those contained in
+ * another FloatArray object, return a new LongArray with each element being -1
+ * if the data array's value is less or equal, and 0 otherwise. */
+static VALUE method_lte(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, sizeof(double), SIMD_LongArray, func_lte));
+}
+
+/* Public: Compare values contained in the data array with those contained in
+ * another FloatArray object, return a new LongArray with each element being
+ * -1 if the data array's value is equal, and 0 otherwise. */
+static VALUE method_eq(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, sizeof(double), SIMD_LongArray, func_eq));
+}
+
+/* Public: Compare values contained in the data array with those contained in
+ * another FloatArray object, return a new LongArray with each element being
+ * 0 if the data array's value is equal, and -1 otherwise. */
+static VALUE method_neq(VALUE self, VALUE obj)
+{
+	return(internal_apply_operation(self, obj, sizeof(double), SIMD_LongArray, func_neq));
+}
+
 /* Public: Return a Ruby Array containing the doubles within the data array. */
 static VALUE method_to_a(VALUE self)
 {
@@ -205,4 +243,29 @@ static void func_gt(void *v1, void *v2, void *r)
 static void func_lt(void *v1, void *v2, void *r)
 {
 	*(l2v *)r = (*(d2v *)v1 < *(d2v *)v2);
+}
+
+/* Function: Compare vectors, return -1 if v1 is greater than v2, 0 otherwise */
+static void func_gte(void *v1, void *v2, void *r)
+{
+	*(l2v *)r = (*(d2v *)v1 >= *(d2v *)v2);
+}
+
+/* Function: Compare vectors, return -1 if v1 is less than v2, 0 otherwise */
+static void func_lte(void *v1, void *v2, void *r)
+{
+	*(l2v *)r = (*(d2v *)v1 <= *(d2v *)v2);
+}
+
+/* Function: Compare vectors, return -1 if v1 is equal to v2, 0 otherwise */
+static void func_eq(void *v1, void *v2, void *r)
+{
+	*(l2v *)r = (*(d2v *)v1 == *(d2v *)v2);
+}
+
+
+/* Function: Compare vectors, return 0 if v1 is equal to v2, -1 otherwise */
+static void func_neq(void *v1, void *v2, void *r)
+{
+	*(l2v *)r = (*(d2v *)v1 != *(d2v *)v2);
 }

@@ -173,7 +173,9 @@ class IntOperationsProps < IntBaseTests
         (a.gt(b)).to_a == xs.map { |a, b| a > b ? -1 : 0 } &&
           (a > b).to_a == xs.map { |a, b| a > b ? -1 : 0 } &&
           (a < b).to_a == xs.map { |a, b| a < b ? -1 : 0 } &&
-          (a.lt(b)).to_a == xs.map { |a, b| a < b ? -1 : 0 }
+          (a.lt(b)).to_a == xs.map { |a, b| a < b ? -1 : 0 } &&
+          (a.lte(b)).to_a == xs.map { |a, b| a <= b ? -1 : 0 } &&
+          (a.gte(b)).to_a == xs.map { |a, b| a >= b ? -1 : 0 }
       else
         true
       end
@@ -189,7 +191,9 @@ class IntOperationsProps < IntBaseTests
         (a.gt(b)).to_a == xs.map { |a, b| a > b ? -1 : 0 } &&
           (a > b).to_a == xs.map { |a, b| a > b ? -1 : 0 } &&
           (a < b).to_a == xs.map { |a, b| a < b ? -1 : 0 } &&
-          (a.lt(b)).to_a == xs.map { |a, b| a < b ? -1 : 0 }
+          (a.lt(b)).to_a == xs.map { |a, b| a < b ? -1 : 0 } &&
+          (a.lte(b)).to_a == xs.map { |a, b| a <= b ? -1 : 0 } &&
+          (a.gte(b)).to_a == xs.map { |a, b| a >= b ? -1 : 0 }
       else
         true
       end

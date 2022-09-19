@@ -31,6 +31,10 @@ class BaseTests < Minitest::Test
     define_method :test_comparisons do
       expected_gt   = @start.zip(@mult).map { |x,y| x > y ? -1 : 0 }
       expected_lt   = @start.zip(@mult).map { |x,y| x < y ? -1 : 0 }
+      expected_gte  = @start.zip(@mult).map { |x,y| x >= y ? -1 : 0 }
+      expected_lte  = @start.zip(@mult).map { |x,y| x <= y ? -1 : 0 }
+      expected_eq   = @start.zip(@mult).map { |x,y| x == y ? -1 : 0 }
+      expected_neq  = @start.zip(@mult).map { |x,y| x != y ? -1 : 0 }
       expected_zero = @start.map { |_| 0 }
 
       # Make sure equality works
@@ -40,22 +44,36 @@ class BaseTests < Minitest::Test
       assert_equal(expected_zero, result_lt.to_a)
 
       # Make sure that < and > work as well
-      result_gt = @start_v > @start_v
-      result_lt = @start_v < @start_v
+      result_gt  = @start_v > @start_v
+      result_lt  = @start_v < @start_v
       assert_equal(expected_zero, result_gt.to_a)
       assert_equal(expected_zero, result_lt.to_a)
 
       # Verify comparisons
-      result_gt = @start_v > @mult_v
-      result_lt = @start_v < @mult_v
+      result_gt  = @start_v.gt @mult_v
+      result_lt  = @start_v.lt @mult_v
+      result_gte = @start_v.gte @mult_v
+      result_lte = @start_v.lte @mult_v
       assert_equal(expected_gt, result_gt.to_a)
       assert_equal(expected_lt, result_lt.to_a)
+      assert_equal(expected_gte, result_gte.to_a)
+      assert_equal(expected_lte, result_lte.to_a)
 
       # Verify that inverse works as expected
       result_gt = @mult_v > @start_v
       result_lt = @mult_v < @start_v
+      result_gte = @mult_v >= @start_v
+      result_lte = @mult_v <= @start_v
       assert_equal(expected_lt, result_gt.to_a)
       assert_equal(expected_gt, result_lt.to_a)
+      assert_equal(expected_lte, result_gte.to_a)
+      assert_equal(expected_gte, result_lte.to_a)
+
+      # Verify equality works
+      result_eq = @mult_v.eq @start_v
+      result_neq = @mult_v.neq @start_v
+      assert_equal(expected_eq, result_eq.to_a)
+      assert_equal(expected_neq, result_neq.to_a)
     end
 
     define_method :test_square_root do
