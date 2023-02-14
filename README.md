@@ -1,5 +1,5 @@
 [![Version](https://img.shields.io/gem/v/simd)][badges:0-gem]
-[![Build](https://img.shields.io/github/workflow/status/wuest/simd-ruby/CI)][badges:1-CI]
+[![Build](https://img.shields.io/github/actions/workflow/status/wuest/simd-ruby/ci.yaml?branch=main)][badges:1-CI]
 [![License](https://img.shields.io/github/license/wuest/simd-ruby)][badges:2-license]
 
 # SIMD in Ruby
