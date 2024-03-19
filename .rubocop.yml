@@ -1,0 +1,57 @@
+AllCops:
+  NewCops: enable
+
+Layout/SpaceInsideParens:
+  Enabled: false
+
+Layout/MultilineArrayBraceLayout:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Style/Documentation:
+  Exclude:
+    - 'test/**/*'
+
+Style/EachWithObject:
+  Enabled: false
+
+Style/EmptyLambdaParameter:
+  Enabled: false
+
+Style/Lambda:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Layout/MultilineHashBraceLayout:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+Style/RedundantSelf:
+  Enabled: false
