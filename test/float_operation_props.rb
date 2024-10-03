@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'helper'
 
 class FloatOperationsProps < IntBaseTests
@@ -8,105 +10,100 @@ class FloatOperationsProps < IntBaseTests
   def test_addition
     property do
       xs = (arbitrary Array, Float32)
-        .zip(arbitrary Array, Float32)
-        .reject do |a, b|
-          a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
-        end
+           .zip((arbitrary Array, Float32))
+           .reject do |a, b|
+             a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
+           end
 
-      if xs.length > 4
-        a = SIMD::SmallFloatArray.new(xs.map(&:first))
-        b = SIMD::SmallFloatArray.new(xs.map(&:last))
-        expected = xs.map { |a, b| [a + b].pack('f').unpack('f').first }.to_a
-        (a + b).to_a == expected
-      else
-        true
-      end
+      where { xs.length > 4 }
+
+      a = SIMD::SmallFloatArray.new(xs.map(&:first))
+      b = SIMD::SmallFloatArray.new(xs.map(&:last))
+
+      expected = xs.map { |x, y| [x + y].pack('f').unpack1('f') }.to_a
+      (a + b).to_a == expected
     end
 
     property do
       xs = (arbitrary Array, Float64)
-        .zip(arbitrary Array, Float64)
-        .reject do |a, b|
-          a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
-        end
+           .zip((arbitrary Array, Float64))
+           .reject do |a, b|
+             a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
+           end
 
-      if xs.length > 2
-        a = SIMD::FloatArray.new(xs.map(&:first))
-        b = SIMD::FloatArray.new(xs.map(&:last))
-        (a + b).to_a == xs.map { |a, b| a + b }
-      else
-        true
-      end
+      where { xs.length >= 2 }
+
+      a = SIMD::FloatArray.new(xs.map(&:first))
+      b = SIMD::FloatArray.new(xs.map(&:last))
+
+      (a + b).to_a == xs.map { |x, y| x + y }
     end
   end
 
   def test_subtraction
     property do
       xs = (arbitrary Array, Float32)
-        .zip(arbitrary Array, Float32)
-        .reject do |a, b|
-          a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
-        end
+           .zip((arbitrary Array, Float32))
+           .reject do |a, b|
+             a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
+           end
 
-      if xs.length > 4
-        a = SIMD::SmallFloatArray.new(xs.map(&:first))
-        b = SIMD::SmallFloatArray.new(xs.map(&:last))
-        expected = xs.map { |a, b| [a - b].pack('f').unpack('f').first }.to_a
-        (a - b).to_a == expected
-      else
-        true
-      end
+      where { xs.length >= 4 }
+
+      a = SIMD::SmallFloatArray.new(xs.map(&:first))
+      b = SIMD::SmallFloatArray.new(xs.map(&:last))
+
+      expected = xs.map { |x, y| [x - y].pack('f').unpack1('f') }.to_a
+      (a - b).to_a == expected
     end
 
     property do
       xs = (arbitrary Array, Float64)
-        .zip(arbitrary Array, Float64)
-        .reject do |a, b|
-          a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
-        end
+           .zip((arbitrary Array, Float64))
+           .reject do |a, b|
+             a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
+           end
 
-      if xs.length > 2
-        a = SIMD::FloatArray.new(xs.map(&:first))
-        b = SIMD::FloatArray.new(xs.map(&:last))
-        (a - b).to_a == xs.map { |a, b| a - b }
-      else
-        true
-      end
+      where { xs.length >= 2 }
+
+      a = SIMD::FloatArray.new(xs.map(&:first))
+      b = SIMD::FloatArray.new(xs.map(&:last))
+
+      (a - b).to_a == xs.map { |x, y| x - y }
     end
   end
 
   def test_multiply
     property do
       xs = (arbitrary Array, Float32)
-        .zip(arbitrary Array, Float32)
-        .reject do |a, b|
-          a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
-        end
+           .zip((arbitrary Array, Float32))
+           .reject do |a, b|
+             a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
+           end
 
-      if xs.length > 4
-        a = SIMD::SmallFloatArray.new(xs.map(&:first))
-        b = SIMD::SmallFloatArray.new(xs.map(&:last))
-        expected = xs.map { |a, b| [a * b].pack('f').unpack('f').first }.to_a
-        (a * b).to_a == expected
-      else
-        true
-      end
+      where { xs.length >= 4 }
+
+      a = SIMD::SmallFloatArray.new(xs.map(&:first))
+      b = SIMD::SmallFloatArray.new(xs.map(&:last))
+
+      expected = xs.map { |x, y| [x * y].pack('f').unpack1('f') }.to_a
+
+      (a * b).to_a == expected
     end
 
     property do
       xs = (arbitrary Array, Float64)
-        .zip(arbitrary Array, Float64)
-        .reject do |a, b|
-          a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
-        end
+           .zip((arbitrary Array, Float64))
+           .reject do |a, b|
+             a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
+           end
 
-      if xs.length > 2
-        a = SIMD::FloatArray.new(xs.map(&:first))
-        b = SIMD::FloatArray.new(xs.map(&:last))
-        (a * b).to_a == xs.map { |a, b| a * b }
-      else
-        true
-      end
+      where { xs.length >= 2 }
+
+      a = SIMD::FloatArray.new(xs.map(&:first))
+      b = SIMD::FloatArray.new(xs.map(&:last))
+
+      (a * b).to_a == xs.map { |x, y| x * y }
     end
   end
 
@@ -116,18 +113,17 @@ class FloatOperationsProps < IntBaseTests
   def test_division
     property do
       xs = (arbitrary Array, Float64)
-        .zip(arbitrary Array, Float64)
-        .reject do |a, b|
-          a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite? || b.zero?
-        end
+           .zip((arbitrary Array, Float64))
+           .reject do |a, b|
+             a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite? || b.zero?
+           end
 
-      if xs.length > 2
-        a = SIMD::FloatArray.new(xs.map(&:first))
-        b = SIMD::FloatArray.new(xs.map(&:last))
-        (a / b).to_a == xs.map { |a, b| a / b }
-      else
-        true
-      end
+      where { xs.length >= 2 }
+
+      a = SIMD::FloatArray.new(xs.map(&:first))
+      b = SIMD::FloatArray.new(xs.map(&:last))
+
+      (a / b).to_a == xs.map { |x, y| x / y }
     end
   end
 
@@ -135,59 +131,56 @@ class FloatOperationsProps < IntBaseTests
   def test_square_root
     property do
       xs = (arbitrary Array, Float64)
-        .reject { |a| a.nan? || a.infinite? }
-        .map(&:abs)
+           .reject { |a| a.nan? || a.infinite? }
+           .map(&:abs)
 
-      if xs.length > 2
-        a = SIMD::FloatArray.new(xs)
-        a.sqrt.to_a == xs.map { |a| Math.sqrt(a) }
-      else
-        true
-      end
+      where { xs.length >= 2 }
+
+      a = SIMD::FloatArray.new(xs)
+
+      a.sqrt.to_a == xs.map { |x| Math.sqrt(x) }
     end
   end
 
   def test_comparison
     property do
       xs = (arbitrary Array, Float32)
-        .zip(arbitrary Array, Float32)
-        .reject do |a, b|
-          a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
-        end
+           .zip((arbitrary Array, Float32))
+           .reject do |a, b|
+             a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
+           end
 
-      if xs.length > 4
-        a = SIMD::SmallFloatArray.new(xs.map(&:first))
-        b = SIMD::SmallFloatArray.new(xs.map(&:last))
-        (a.gt(b)).to_a == xs.map { |a, b| a > b ? -1 : 0 } &&
-          (a > b).to_a == xs.map { |a, b| a > b ? -1 : 0 } &&
-          (a < b).to_a == xs.map { |a, b| a < b ? -1 : 0 } &&
-          (a.lt(b)).to_a == xs.map { |a, b| a < b ? -1 : 0 } &&
-          (a.lte(b)).to_a == xs.map { |a, b| a <= b ? -1 : 0 } &&
-          (a.gte(b)).to_a == xs.map { |a, b| a >= b ? -1 : 0 }
-      else
-        true
-      end
+      where { xs.length >= 4 }
+
+      a = SIMD::SmallFloatArray.new(xs.map(&:first))
+      b = SIMD::SmallFloatArray.new(xs.map(&:last))
+
+      a.gt(b).to_a == xs.map { |x, y| x > y ? -1 : 0 } &&
+        (a > b).to_a == xs.map { |x, y| x > y ? -1 : 0 } &&
+        (a < b).to_a == xs.map { |x, y| x < y ? -1 : 0 } &&
+        a.lt(b).to_a == xs.map { |x, y| x < y ? -1 : 0 } &&
+        a.lte(b).to_a == xs.map { |x, y| x <= y ? -1 : 0 } &&
+        a.gte(b).to_a == xs.map { |x, y| x >= y ? -1 : 0 }
     end
 
     property do
       xs = (arbitrary Array, Float64)
-        .zip(arbitrary Array, Float64)
-        .reject do |a, b|
-          a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
-        end
+           .zip((arbitrary Array, Float64))
+           .reject do |a, b|
+             a.nil? || b.nil? || a.nan? || a.infinite? || b.nan? || b.infinite?
+           end
 
-      if xs.length > 2
-        a = SIMD::FloatArray.new(xs.map(&:first))
-        b = SIMD::FloatArray.new(xs.map(&:last))
-        (a.gt(b)).to_a == xs.map { |a, b| a > b ? -1 : 0 } &&
-          (a > b).to_a == xs.map { |a, b| a > b ? -1 : 0 } &&
-          (a < b).to_a == xs.map { |a, b| a < b ? -1 : 0 } &&
-          (a.lt(b)).to_a == xs.map { |a, b| a < b ? -1 : 0 } &&
-          (a.lte(b)).to_a == xs.map { |a, b| a <= b ? -1 : 0 } &&
-          (a.gte(b)).to_a == xs.map { |a, b| a >= b ? -1 : 0 }
-      else
-        true
-      end
+      where { xs.length > 2 }
+
+      a = SIMD::FloatArray.new(xs.map(&:first))
+      b = SIMD::FloatArray.new(xs.map(&:last))
+
+      a.gt(b).to_a == xs.map { |x, y| x > y ? -1 : 0 } &&
+        (a > b).to_a == xs.map { |x, y| x > y ? -1 : 0 } &&
+        (a < b).to_a == xs.map { |x, y| x < y ? -1 : 0 } &&
+        a.lt(b).to_a == xs.map { |x, y| x < y ? -1 : 0 } &&
+        a.lte(b).to_a == xs.map { |x, y| x <= y ? -1 : 0 } &&
+        a.gte(b).to_a == xs.map { |x, y| x >= y ? -1 : 0 }
     end
   end
 end
