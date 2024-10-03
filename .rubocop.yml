@@ -1,6 +1,12 @@
 AllCops:
   NewCops: enable
 
+Layout/HashAlignment:
+  Enabled: false
+
+Layout/MultilineHashBraceLayout:
+  Enabled: false
+
 Layout/SpaceInsideParens:
   Enabled: false
 
@@ -54,10 +60,10 @@ Style/GlobalVars:
 Style/Lambda:
   Enabled: false
 
-Style/MultilineBlockChain:
+Style/MixinUsage:
   Enabled: false
 
-Layout/MultilineHashBraceLayout:
+Style/MultilineBlockChain:
   Enabled: false
 
 # != is business logic which must be tested

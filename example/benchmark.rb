@@ -1,33 +1,36 @@
 #!/usr/bin/env ruby
-$:.unshift(File.expand_path('../lib'))
+
+# frozen_string_literal: true
+
+$LOAD_PATH.unshift(File.expand_path('../lib'))
 require 'simd'
 require 'benchmark'
 
 include SIMD
 
 def sisd_loop(op, modulo, sisd, x)
-  sisd_loop = if modulo
+  if modulo
     len = sisd.length
     case op
     when :*
-      ->(e, i) { x << e * sisd[i % len] }
+      ->(e, i) { x << (e * sisd[i % len]) }
     when :+
-      ->(e, i) { x << e + sisd[i % len] }
+      ->(e, i) { x << (e + sisd[i % len]) }
     when :/
-      ->(e, i) { x << e / sisd[i % len] }
+      ->(e, i) { x << (e / sisd[i % len]) }
     when :-
-      ->(e, i) { x << e - sisd[i % len] }
+      ->(e, i) { x << (e - sisd[i % len]) }
     end
   else
     case op
     when :*
-      ->(e, i) { x << e * sisd[i] }
+      ->(e, i) { x << (e * sisd[i]) }
     when :+
-      ->(e, i) { x << e + sisd[i] }
+      ->(e, i) { x << (e + sisd[i]) }
     when :/
-      ->(e, i) { x << e / sisd[i] }
+      ->(e, i) { x << (e / sisd[i]) }
     when :-
-      ->(e, i) { x << e - sisd[i] }
+      ->(e, i) { x << (e - sisd[i]) }
     end
   end
 end
@@ -43,17 +46,15 @@ s2 = FloatArray.new(a2)
 s3 = FloatArray.new(a3)
 s4 = FloatArray.new(a4)
 
-modes = {
-  'Same size array' => [a2, [s1, s2]],
-  '4-wide operand'  => [a3, [s1, s3]],
-  '2-wide operand'  => [a4, [s1, s4]]
-}
-ops = {
-  'Multiplication' => :*,
-  'Addition'       => :+,
-  'Division'       => :/,
-  'Subtraction'    => :-
-}
+modes = { 'Same size array' => [a2, [s1, s2]],
+          '4-wide operand'  => [a3, [s1, s3]],
+          '2-wide operand'  => [a4, [s1, s4]]
+        }
+ops = { 'Multiplication' => :*,
+        'Addition'       => :+,
+        'Division'       => :/,
+        'Subtraction'    => :-
+      }
 
 modes.each do |mode, args|
   puts " *** #{mode} ***"
@@ -65,9 +66,9 @@ modes.each do |mode, args|
 
     Benchmark.bm do |b|
       b.report('SIMD') { iter.times { s1.method(op).call(s2) } }
-      b.report('SISD') do
+      b.report('Ruby') do
         iter.times do
-          a1.each_with_index(&(sisd_loop(op, modulo, sisd, Array.new)))
+          a1.each_with_index(&sisd_loop(op, modulo, sisd, []))
         end
       end
     end
@@ -75,7 +76,7 @@ modes.each do |mode, args|
   puts
 end
 
-puts " *** Square root calculation *** "
+puts ' *** Square root calculation *** '
 Benchmark.bm do |b|
   b.report('SIMD') { iter.times { s1.sqrt } }
   b.report('SISD') do
