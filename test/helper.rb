@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/proptest_plugin'
