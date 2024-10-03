@@ -4,6 +4,9 @@ AllCops:
 Layout/SpaceInsideParens:
   Enabled: false
 
+Layout/SymbolArray:
+  Enabled: false
+
 Layout/MultilineArrayBraceLayout:
   Enabled: false
 
@@ -37,6 +40,10 @@ Style/EachWithObject:
 
 Style/EmptyLambdaParameter:
   Enabled: false
+
+Style/GlobalVars:
+  Exclude:
+    - 'ext/simd/extconf.rb'
 
 Style/Lambda:
   Enabled: false
