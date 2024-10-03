@@ -4,9 +4,6 @@ AllCops:
 Layout/SpaceInsideParens:
   Enabled: false
 
-Layout/SymbolArray:
-  Enabled: false
-
 Layout/MultilineArrayBraceLayout:
   Enabled: false
 
@@ -61,4 +58,7 @@ Style/OptionalBooleanParameter:
   Enabled: false
 
 Style/RedundantSelf:
+  Enabled: false
+
+Style/SymbolArray:
   Enabled: false
