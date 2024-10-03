@@ -1,0 +1,26 @@
+PATH
+  remote: .
+  specs:
+    simd (0.5.3)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    minitest (5.22.2)
+    minitest-proptest (0.3.0)
+      minitest (~> 5)
+    rake (13.1.0)
+    rake-compiler (1.2.7)
+      rake
+
+PLATFORMS
+  ruby
+  x86_64-linux
+
+DEPENDENCIES
+  minitest-proptest (~> 0.2)
+  rake-compiler (~> 1.2)
+  simd!
+
+BUNDLED WITH
+   2.5.6
