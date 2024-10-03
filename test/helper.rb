@@ -31,12 +31,12 @@ class BaseTests < Minitest::Test
     end
 
     define_method :test_comparisons do
-      expected_gt   = @start.zip(@mult).map { |x,y| x > y ? -1 : 0 }
-      expected_lt   = @start.zip(@mult).map { |x,y| x < y ? -1 : 0 }
-      expected_gte  = @start.zip(@mult).map { |x,y| x >= y ? -1 : 0 }
-      expected_lte  = @start.zip(@mult).map { |x,y| x <= y ? -1 : 0 }
-      expected_eq   = @start.zip(@mult).map { |x,y| x == y ? -1 : 0 }
-      expected_neq  = @start.zip(@mult).map { |x,y| x != y ? -1 : 0 }
+      expected_gt   = @start.zip(@mult).map { |x, y| x > y ? -1 : 0 }
+      expected_lt   = @start.zip(@mult).map { |x, y| x < y ? -1 : 0 }
+      expected_gte  = @start.zip(@mult).map { |x, y| x >= y ? -1 : 0 }
+      expected_lte  = @start.zip(@mult).map { |x, y| x <= y ? -1 : 0 }
+      expected_eq   = @start.zip(@mult).map { |x, y| x == y ? -1 : 0 }
+      expected_neq  = @start.zip(@mult).map { |x, y| x != y ? -1 : 0 }
       expected_zero = @start.map { |_| 0 }
 
       # Make sure equality works
@@ -87,8 +87,8 @@ class BaseTests < Minitest::Test
     end
 
     define_method :test_cannot_operate_between_even_and_odd_length_vectors do
-      veven = klass.new([1,2,3,4])
-      vodd  = klass.new([1,2,3,4,5])
+      veven = klass.new([1, 2, 3, 4])
+      vodd  = klass.new([1, 2, 3, 4, 5])
       assert_raises(ArgumentError) { veven * vodd }
     end
 
@@ -110,8 +110,8 @@ class IntBaseTests < BaseTests
 
   def self.build_int_tests(klass)
     define_method :test_unaligned_vectors_wont_div_by_zero do
-      unaligned1 = [3,4,5,6,7]
-      unaligned2 = [1,2,3,4,5]
+      unaligned1 = [3, 4, 5, 6, 7]
+      unaligned2 = [1, 2, 3, 4, 5]
       unaligned3 = [2] * 5
       expected   = [1] * 5
 
@@ -166,8 +166,8 @@ class FloatBaseTests < BaseTests
 
   def self.build_float_tests(klass)
     define_method :test_unaligned_vectors_wont_div_by_zero do
-      unaligned1 = [3,4,5,6,7]
-      unaligned2 = [1,2,3,4,5]
+      unaligned1 = [3, 4, 5, 6, 7]
+      unaligned2 = [1, 2, 3, 4, 5]
       unaligned3 = [2.0] * 5
       expected   = [1] * 5
 

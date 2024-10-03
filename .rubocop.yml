@@ -7,10 +7,19 @@ Layout/SpaceInsideParens:
 Layout/MultilineArrayBraceLayout:
   Enabled: false
 
+Lint/BinaryOperatorWithIdenticalOperands:
+  Enabled: false
+
+Lint/EachWithObjectArgument:
+  Enabled: false
+
 Metrics/ClassLength:
   Enabled: false
 
 Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
   Enabled: false
 
 Metrics/CyclomaticComplexity:
@@ -49,6 +58,10 @@ Style/MultilineBlockChain:
   Enabled: false
 
 Layout/MultilineHashBraceLayout:
+  Enabled: false
+
+# != is business logic which must be tested
+Style/NegatedIfElseCondition:
   Enabled: false
 
 Style/NumericPredicate:
