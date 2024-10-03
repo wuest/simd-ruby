@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Makes Makefiles for Ruby extensions.
 require 'mkmf'
 
