@@ -3,6 +3,8 @@ require 'minitest/autorun'
 require 'minitest/proptest_plugin'
 require 'simd'
 
+Minitest.load :proptest if Minitest.respond_to?(:load)
+
 $LOAD_PATH.unshift File.dirname(__FILE__)
 
 class BaseTests < Minitest::Test
