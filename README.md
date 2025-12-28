@@ -86,7 +86,7 @@ The SIMD-Ruby project is governed by a [Code of Conduct][code-of-conduct].
 
 ## License
 
-Copyright © 2014-2022 Tina Wuest, released under the MIT license.
+Copyright © 2014-2026 Tina Wuest, released under the MIT license.
 See [LICENSE][copyright-0:LICENSE] for details.
 
 [badges:0-gem]: https://rubygems.org/gems/simd
