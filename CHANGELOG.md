@@ -1,7 +1,8 @@
-## [0.6.0] - 2022-
+## [0.6.0] - 2025-25-28
 - Add support for sqrt
-- Complete support for equality checking (eq, geq, leq)
+- Complete support for comparisons (eq, neq, gte, lte)
 - Add CI via GitHub Actions
+- Support for Ruby 4
 
 ## [0.5.2] - 2022-08-29
 
